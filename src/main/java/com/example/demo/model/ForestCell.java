@@ -6,6 +6,7 @@ public abstract class ForestCell {
     protected String name;
     protected int    xPos;
     protected int    yPos;
+    protected int    height;
 
     /**
      * Constructor method
@@ -13,12 +14,14 @@ public abstract class ForestCell {
      * @param name String value, name of the cell
      * @param xPos int value, position length-wise in the forest
      * @param yPos int value, position width-wise in the forest
+     * @param height int value, the relative height of the forest
      */
 
-    public ForestCell(String name, int xPos, int yPos){
+    public ForestCell(String name, int xPos, int yPos, int height){
         this.name = name;
         this.xPos = xPos;
         this.yPos = yPos;
+        this.height = height;
     }
 
     //Getter Methods
@@ -47,6 +50,13 @@ public abstract class ForestCell {
 
     public int getYPos(){return this.yPos;}
 
+    /**
+     * Getter method of the height attribute
+     *
+     * @return int value, the relative height of the cell within the forest
+     */
+    public int getHeight(){return this.height;}
+
     //Override Methods
 
     @Override
@@ -55,6 +65,7 @@ public abstract class ForestCell {
         String display = "Nom: " + this.name + "\n";
         display += "- " + "x: " + this.xPos + "\n";
         display += "- " + "y: " + this.yPos + "\n";
+        display += "- " + "hauteur: " + this.height + "\n";
 
         return display;
     }

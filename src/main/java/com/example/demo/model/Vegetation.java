@@ -15,8 +15,8 @@ public abstract class Vegetation extends ForestCell {
      * @param yPos int value, position width-wise of the plant within the forest
      */
 
-    public Vegetation(String name, State state, int xPos, int yPos){
-        super(name, xPos, yPos);
+    public Vegetation(String name, State state, int xPos, int yPos, int height){
+        super(name, xPos, yPos, height);
         this.state = state;
     }
 
@@ -43,7 +43,24 @@ public abstract class Vegetation extends ForestCell {
         return display;
     }
 
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof Vegetation){
+            Vegetation v = (Vegetation) o;
 
+            return this.xPos == v.getXPos() &&
+                   this.yPos == v.getYPos() &&
+                   this.name.equals(v.getName());
+        }
+        return false;
+    }
 
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + xPos;
+        result = 31 * result + yPos;
+        return result;
+    }
 
 }

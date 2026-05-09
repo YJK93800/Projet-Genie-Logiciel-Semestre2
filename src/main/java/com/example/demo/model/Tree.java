@@ -15,9 +15,9 @@ public class Tree extends Vegetation{
      * @param yPos int value, y position of the tree in the forest
      * @param specie TreeSpecies enum value, specie of the tree
      */
-    public Tree(String name, State state, int xPos, int yPos, TreeSpecies specie){
+    public Tree(String name, State state, int xPos, int yPos, int height, TreeSpecies specie){
 
-        super(name, state, xPos, yPos);
+        super(name, state, xPos, yPos, height);
         this.specie = specie;
 
     }
