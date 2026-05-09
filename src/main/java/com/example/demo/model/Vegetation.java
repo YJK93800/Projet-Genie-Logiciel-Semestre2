@@ -1,12 +1,9 @@
 package com.example.demo.model;
 
-abstract class Vegetation {
+public abstract class Vegetation extends ForestCell {
 
     //General Attributes
-    protected String name;
     protected State  state;
-    protected int    xPos;
-    protected int    yPos;
 
     // Methods
 
@@ -19,21 +16,12 @@ abstract class Vegetation {
      */
 
     public Vegetation(String name, State state, int xPos, int yPos){
-        this.name = name;
+        super(name, xPos, yPos);
         this.state = state;
-        this.xPos = xPos;
-        this.yPos = yPos;
     }
 
     //Getter Method
 
-    /**
-     * Getter method of the attribute name
-     *
-     * @return String value, name of the plant
-     */
-
-    public String getName(){return this.name;}
 
     /**
      * Getter method of the attribute state
@@ -43,32 +31,14 @@ abstract class Vegetation {
 
     public State getState(){return this.state;}
 
-    /**
-     * Getter method of the xPos attribute
-     *
-     * @return int value, x position of the plant within the forest
-     */
-
-    public int getXPos(){return this.xPos;}
-
-    /**
-     * Getter method of the yPos attribute
-     *
-     * @return int value, the y position of the plant within the forest
-     */
-
-    public int getYPos(){return this.yPos;}
-
 
     //Override Methods
 
     @Override
     public String toString(){
 
-        String display = "Nom: " + this.name + "\n";
+        String display = super.toString();
         display += "- " + "Status: " + this.state + "\n";
-        display += "- " + "x: " + this.xPos + "\n";
-        display += "- " + "y: " + this.yPos + "\n";
 
         return display;
     }
