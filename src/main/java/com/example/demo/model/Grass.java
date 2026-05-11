@@ -2,7 +2,7 @@ package com.example.demo.model;
 
 public class Grass extends Vegetation{
 
-    private GrassType height;
+    private GrassType type;
 
 
     /**
@@ -12,11 +12,11 @@ public class Grass extends Vegetation{
      * @param state State enum value, current state of the grass
      * @param xPos int value, x position in the forest
      * @param yPos int value, y position in the forest
-     * @param height GrassType enum value, height of the grass
+     * @param type GrassType enum value, height of the grass
      */
-    public Grass(String name, State state, int xPos, int yPos, GrassType height){
-        super(name, state, xPos, yPos);
-        this.height = height;
+    public Grass(String name, State state, int xPos, int yPos, int height, GrassType type){
+        super(name, state, xPos, yPos, height);
+        this.type = type;
     }
 
     //getter method
@@ -26,7 +26,7 @@ public class Grass extends Vegetation{
      *
      * @return GrassType enum value
      */
-    public GrassType getHeight(){return this.height;}
+    public GrassType getType(){return this.type;}
 
 
     //Override Methods
@@ -34,7 +34,7 @@ public class Grass extends Vegetation{
     public String toString(){
         String display = super.toString();
         display += "Type: Herbe" + "\n";
-        display += "Taill: " + this.height + "\n";
+        display += "type: " + this.type + "\n";
 
         return display;
     }
