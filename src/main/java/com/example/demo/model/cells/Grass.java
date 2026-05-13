@@ -1,6 +1,6 @@
-package com.example.demo.model;
+package com.example.demo.model.cells;
 
-public class Grass extends Vegetation{
+public class Grass extends Vegetation {
 
     private GrassType type;
 
@@ -12,6 +12,7 @@ public class Grass extends Vegetation{
      * @param state State enum value, current state of the grass
      * @param xPos int value, x position in the forest
      * @param yPos int value, y position in the forest
+     * @param height int value, relative height of the grass in the forest
      * @param type GrassType enum value, height of the grass
      */
     public Grass(String name, State state, int xPos, int yPos, int height, GrassType type){
