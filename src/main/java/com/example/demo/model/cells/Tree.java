@@ -1,6 +1,6 @@
-package com.example.demo.model;
+package com.example.demo.model.cells;
 
-public class Tree extends Vegetation{
+public class Tree extends Vegetation {
 
     private TreeSpecies specie;
 
@@ -13,6 +13,7 @@ public class Tree extends Vegetation{
      * @param state State enum value, current state of the tree
      * @param xPos int value, x position of the tree in the forest
      * @param yPos int value, y position of the tree in the forest
+     * @param height int value, relative height of the tree in the forest
      * @param specie TreeSpecies enum value, specie of the tree
      */
     public Tree(String name, State state, int xPos, int yPos, int height, TreeSpecies specie){
