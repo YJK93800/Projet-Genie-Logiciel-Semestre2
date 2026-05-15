@@ -1,5 +1,13 @@
 package com.example.demo.model.cells;
 
+/**
+ * Represents a cell within the forest
+ * <p>
+ * @author Yann Kong IN1 GI1
+ * @version 21.0.8
+ */
+
+
 public abstract class ForestCell {
 
     //Atributes
