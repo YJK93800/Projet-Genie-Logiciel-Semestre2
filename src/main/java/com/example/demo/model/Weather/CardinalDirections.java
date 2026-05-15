@@ -8,5 +8,5 @@ package com.example.demo.model.Weather;
  */
 
 public enum CardinalDirections {
-    NORTH, SOUTH, EAST, WEST;
+    NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST;
 }
