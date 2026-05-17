@@ -14,4 +14,8 @@ public class Soil extends ForestCell{
         super(name, xPos, yPos, height);
     }
 
+    public char getChar(){
+        return 'S';
+    }
+
 }

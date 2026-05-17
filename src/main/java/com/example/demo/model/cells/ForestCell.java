@@ -65,6 +65,15 @@ public abstract class ForestCell {
      */
     public int getHeight(){return this.height;}
 
+    //Abstract Methods
+
+    /**
+     * Method to return the character associated to the instance
+     *
+     * @return char value, the symbol representing the object
+     */
+    public abstract char getChar();
+
     //Override Methods
 
     @Override

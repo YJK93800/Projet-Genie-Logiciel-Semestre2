@@ -61,6 +61,33 @@ public class Tree extends Vegetation {
         }
     }
 
+    /**
+     * Method to convert a tree's specie into a displayable character
+     *
+     * @return String value, the character that represents the tree's specie
+     */
+    public char getChar(){
+        char display;
+        switch(this.specie){
+            case OAK:
+                display = 'O';
+                break;
+            case BIRCH:
+                display = 'B';
+                break;
+            case PINE:
+                display = 'P';
+                break;
+            case ACACIA:
+                display = 'A';
+                break;
+            default:
+                throw new TreeException("Unknow tree specie");
+
+        }
+        return display;
+    }
+
 
     //Override
     @Override

@@ -14,4 +14,8 @@ public class BodyOfWater extends ForestCell{
         super(name, xPos, yPos, height);
     }
 
+    public char getChar(){
+        return 'W';
+    }
+
 }
