@@ -18,6 +18,7 @@ public class Grass extends Vegetation {
     public Grass(String name, State state, int xPos, int yPos, int height, GrassType type){
         super(name, state, xPos, yPos, height);
         this.type = type;
+        this.flammability = initializeFlammability();
     }
 
     //getter method
@@ -31,6 +32,12 @@ public class Grass extends Vegetation {
 
     public char getChar(){
         return 'G';
+    }
+
+    //Methods
+
+    public double initializeFlammability(){
+        return 0.8;
     }
 
 

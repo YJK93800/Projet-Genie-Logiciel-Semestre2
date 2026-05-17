@@ -22,6 +22,7 @@ public class Tree extends Vegetation {
 
         super(name, state, xPos, yPos, height);
         charToType(specie);
+        this.flammability = initializeFlammability();
 
     }
 
@@ -82,10 +83,25 @@ public class Tree extends Vegetation {
                 display = 'A';
                 break;
             default:
-                throw new TreeException("Unknow tree specie");
+                throw new TreeException("ERROR 400 : Unknown tree specie");
 
         }
         return display;
+    }
+
+    public double initializeFlammability(){
+        switch(this.specie){
+            case OAK:
+                return 0.2;
+            case BIRCH:
+                return 0.1;
+            case PINE:
+                return 0.5;
+            case ACACIA:
+                return 0.05;
+            default:
+                throw new TreeException("ERROR 401 : Unknown Tree specie");
+        }
     }
 
 

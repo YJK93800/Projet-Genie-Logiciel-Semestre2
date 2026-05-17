@@ -1,0 +1,11 @@
+File explaining error types:
+
+    First of all, errors will be given a 3 digits code
+
+    For Tree related errors : the first digit will be 4
+
+        - 400 : From the .txt file given in argument to the Forest Class in its method toLoadForestGridLayout
+                there is an error with one of the characters present.
+
+        - 401 : Flammability of the Tree, something went wrong in its initialization, although this error will never be
+                reached without triggering Error 400.

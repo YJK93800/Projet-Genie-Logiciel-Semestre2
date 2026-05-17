@@ -4,6 +4,7 @@ public abstract class Vegetation extends ForestCell {
 
     //General Attributes
     protected State state;
+    protected double flammability;
 
     // Methods
 
@@ -30,6 +31,22 @@ public abstract class Vegetation extends ForestCell {
      */
 
     public State getState(){return this.state;}
+
+    /**
+     * Getter method of the flammability attribute
+     *
+     * @return double value, returns the flammability of the plant and ranges from 0 excluded to 1
+     */
+    public double getFlammability(){return this.flammability;}
+
+    //Abstract Methods
+
+    /**
+     * Method that sets the flammability of a plant according to its specifications
+     *
+     * @return double value, the flammability of the plant
+     */
+    public abstract double initializeFlammability();
 
 
     //Override Methods
