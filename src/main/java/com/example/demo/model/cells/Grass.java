@@ -29,6 +29,10 @@ public class Grass extends Vegetation {
      */
     public GrassType getType(){return this.type;}
 
+    public char getChar(){
+        return 'G';
+    }
+
 
     //Override Methods
     @Override

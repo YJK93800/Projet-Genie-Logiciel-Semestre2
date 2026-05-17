@@ -60,7 +60,7 @@ public class Forest {
 
     private ForestCell[][] loadForestGridLayout(String file){
         Path currentDirectory = Paths.get("").toAbsolutePath();
-        Path gridToLoad = currentDirectory.resolve("assets").resolve("textFiles").resolve(file);
+        Path gridToLoad = currentDirectory.resolve("src").resolve("main").resolve("resources").resolve("textFiles").resolve(file);
 
         ForestCell[][] forestGrid;
 
@@ -108,6 +108,25 @@ public class Forest {
             if (lines.get(i).length() > max) max = lines.get(i).length();
         }
         return max;
+    }
+
+    //Override Methods
+
+    @Override
+    public String toString(){
+        String display = "\n";
+        int row = this.forestGrid.length;
+        int col = this.forestGrid[0].length;
+
+        for (int i = 0; i < row; i++){
+            for(int j = 0; j< col; j++){
+                display += this.forestGrid[i][j].getChar() + " ";
+            }
+            display += "\n";
+        }
+
+
+        return display;
     }
 
 }
