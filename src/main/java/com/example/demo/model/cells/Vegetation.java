@@ -5,6 +5,7 @@ public abstract class Vegetation extends ForestCell {
     //General Attributes
     protected State state;
     protected double flammability;
+    protected int combustionTime;
 
     // Methods
 
@@ -16,9 +17,10 @@ public abstract class Vegetation extends ForestCell {
      * @param yPos int value, position width-wise of the plant within the forest
      */
 
-    public Vegetation(String name, State state, int xPos, int yPos, int height){
+    public Vegetation(String name, State state, int xPos, int yPos, int height, int combustionTime){
         super(name, xPos, yPos, height);
         this.state = state;
+        this.combustionTime = combustionTime;
     }
 
     //Getter Method
@@ -39,6 +41,13 @@ public abstract class Vegetation extends ForestCell {
      */
     public double getFlammability(){return this.flammability;}
 
+    /**
+     * Getter method of the combustionTime attribute
+     *
+     * @return self-explanatory
+     */
+    public int getCombustionTime(){return this.combustionTime;}
+
     //Abstract Methods
 
     /**
@@ -48,6 +57,28 @@ public abstract class Vegetation extends ForestCell {
      */
     public abstract double initializeFlammability();
 
+    //Setter Methods
+
+    /**
+     * Setter method of the state attribute
+     *
+     * @param state State enum value, the new state of the plant
+     */
+
+    public void setState(State state){this.state = state;}
+
+    // Method
+
+    /**
+     * Method to burn a plant
+     *
+     */
+    public void burn(){
+        combustionTime -= 1;
+        if (combustionTime <= 0) {
+            setState(State.DEAD);
+        }
+    }
 
     //Override Methods
 
