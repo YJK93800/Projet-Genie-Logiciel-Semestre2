@@ -16,7 +16,7 @@ public class Grass extends Vegetation {
      * @param type GrassType enum value, height of the grass
      */
     public Grass(String name, State state, int xPos, int yPos, int height, GrassType type){
-        super(name, state, xPos, yPos, height);
+        super(name, state, xPos, yPos, height, 1);
         this.type = type;
         this.flammability = initializeFlammability();
     }

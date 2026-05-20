@@ -20,7 +20,7 @@ public class Tree extends Vegetation {
      */
     public Tree(String name, State state, int xPos, int yPos, int height, char specie){
 
-        super(name, state, xPos, yPos, height);
+        super(name, state, xPos, yPos, height, 2);
         charToType(specie);
         this.flammability = initializeFlammability();
 
