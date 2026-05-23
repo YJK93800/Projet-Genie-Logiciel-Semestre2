@@ -120,7 +120,7 @@ public class Forest {
 
         for (int i = 0; i < row; i++){
             for(int j = 0; j< col; j++){
-                display += this.forestGrid[i][j].getChar() + " ";
+                display += this.forestGrid[i][j].display() + " ";
             }
             display += "\n";
         }

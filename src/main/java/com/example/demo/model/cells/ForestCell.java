@@ -74,6 +74,13 @@ public abstract class ForestCell {
      */
     public abstract char getChar();
 
+    /**
+     * Method to return the emoji associated to the instance
+     *
+     * @return
+     */
+    public abstract String display();
+
     //Override Methods
 
     @Override

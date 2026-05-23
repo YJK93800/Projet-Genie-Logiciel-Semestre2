@@ -8,5 +8,34 @@ package com.example.demo.model.Weather;
  */
 
 public enum CardinalDirections {
-    NEUTRAL,NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST;
+    NEUTRAL(0,0),
+    NORTH(-1,0),
+    SOUTH(1,0),
+    EAST(0,1),
+    WEST(0, -1),
+    NORTHEAST(-1,1),
+    NORTHWEST(-1,-1),
+    SOUTHEAST(1,1),
+    SOUTHWEST(1,-1);
+
+    private int xPos;
+    private int yPos;
+
+    CardinalDirections(int xPos, int yPos){
+        this.xPos = xPos;
+        this.yPos = yPos;
+    }
+
+    public int getXPos(){return this.xPos;}
+    public int getYPos(){return this.yPos;}
+
+    public static CardinalDirections getDirection(int dx, int dy) {
+        for (CardinalDirections direction : CardinalDirections.values()) {
+            if (direction.getXPos() == dx && direction.getYPos() == dy) {
+                return direction;
+            }
+        }
+        return NEUTRAL;
+    }
+
 }

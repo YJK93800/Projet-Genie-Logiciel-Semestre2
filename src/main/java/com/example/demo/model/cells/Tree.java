@@ -107,6 +107,25 @@ public class Tree extends Vegetation {
 
     //Override
     @Override
+    public String display(){
+
+        switch(this.state){
+
+            case ALIVE:
+                return "\uD83C\uDF32";
+
+            case BURNING:
+                return "🔥";
+
+            case DEAD:
+                return "⬛";
+
+            default:
+                return "?";
+        }
+    }
+
+    @Override
     public String toString(){
         String display = super.toString();
         display += "Type: Arbre" + "\n";

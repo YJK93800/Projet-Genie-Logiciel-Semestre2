@@ -1,6 +1,8 @@
 package com.example.demo.simulation;
 
+import com.example.demo.exceptions.SimulationException;
 import com.example.demo.model.Forest;
+import com.example.demo.model.Weather.CardinalDirections;
 import com.example.demo.model.Weather.Weather;
 import com.example.demo.model.Weather.Wind;
 import com.example.demo.model.cells.ForestCell;
@@ -10,7 +12,9 @@ import com.example.demo.model.cells.Vegetation;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Scanner;
 
+import static com.example.demo.model.Weather.CardinalDirections.NEUTRAL;
 import static com.example.demo.model.cells.State.BURNING;
 
 /**
@@ -110,7 +114,50 @@ public class Simulation {
         if (grid[i][j] instanceof Vegetation){
             Vegetation plant = (Vegetation) grid[i][j];
             plant.setState(BURNING);
+            burningPlants.add(plant);
+            return;
         }
+
+        throw new SimulationException(
+                "ERROR 100 : Cannot Ignite cell at position :" + i + "," + j
+        );
+    }
+
+    /**
+     * Method to run the simulation
+     *
+     * @param i width-coordinate of the starting cell
+     * @param j length-coordinate of the starting cell
+     */
+    public void run(int i, int j){
+        ignitePlant(i,j);
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Simulation running.");
+        System.out.println("Press p to run one turn.");
+        System.out.println("Press q to exit.");
+
+        System.out.println(this.forest);
+
+        while (!burningPlants.isEmpty()) {
+            System.out.print("> ");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("p")) {
+                spreadFireOneTurn();
+                System.out.println(this.forest);
+                System.out.println("Turn: " + this.turn);
+            }
+            else if (input.equalsIgnoreCase("q")) {
+                System.out.println("Simulation arrêtée.");
+                break;
+            }
+            else {
+                System.out.println("Commande inconnue. Utilise p ou q.");
+            }
+        }
+
+        System.out.println("Simulation terminée : plus aucune plante ne brûle.");
     }
 
     /**
@@ -118,9 +165,8 @@ public class Simulation {
      * Burning plants try to ignite their four direct neighbors
      */
 
-    public void spreadFireNoWind() {
+    public void spreadFireOneTurn() {
 
-        ForestCell[][] grid = this.forest.getForestGrid();
         ArrayList<Vegetation> plantsToIgnite = new ArrayList<>();
 
         Iterator<Vegetation> iterator = burningPlants.iterator();
@@ -131,10 +177,10 @@ public class Simulation {
             int i = plant.getXPos();
             int j = plant.getYPos();
 
-            tryIgniteNeighbor(grid, plantsToIgnite, i - 1, j); // top cell
-            tryIgniteNeighbor(grid, plantsToIgnite, i + 1, j); // bottom cell
-            tryIgniteNeighbor(grid, plantsToIgnite, i, j - 1); // left cell
-            tryIgniteNeighbor(grid, plantsToIgnite, i, j + 1); // right cell
+            tryIgniteNeighbor(plant, plantsToIgnite, i - 1, j); // top cell
+            tryIgniteNeighbor(plant, plantsToIgnite, i + 1, j); // bottom cell
+            tryIgniteNeighbor(plant, plantsToIgnite, i, j - 1); // left cell
+            tryIgniteNeighbor(plant, plantsToIgnite, i, j + 1); // right cell
 
             plant.burn();
 
@@ -147,18 +193,21 @@ public class Simulation {
             plant.setState(State.BURNING);
             burningPlants.add(plant);
         }
+        this.turn += 1;
     }
 
     /**
      * Auxiliary method for fire spreading methods
      *
-     * @param grid the forest grid
+     * @param source the origin of the fire targetting the plant
      * @param plantsToIgnite array List, contains the cells to be set on fire
      * @param i int value, the width position
      * @param j int value, the length position
      */
 
-    private void tryIgniteNeighbor(ForestCell[][] grid, ArrayList<Vegetation> plantsToIgnite, int i, int j) {
+    private void tryIgniteNeighbor(Vegetation source, ArrayList<Vegetation> plantsToIgnite, int i, int j) {
+
+        ForestCell[][] grid = this.forest.getForestGrid();
 
         int row = grid.length;
         int col = grid[0].length;
@@ -171,7 +220,7 @@ public class Simulation {
             Vegetation plant = (Vegetation) grid[i][j];
 
             if (plant.getState() == State.ALIVE) {
-                double probability = plant.getFlammability() * this.weatherModifier;
+                double probability = spreadingProbability(source, plant, i, j);
                 probability = Math.max(0.0, Math.min(1.0, probability));
 
                 if (Math.random() < probability && !plantsToIgnite.contains(plant)) {
@@ -179,6 +228,49 @@ public class Simulation {
                 }
             }
         }
+    }
+
+    /**
+     * Method to set the probability for a fire to spread to a nearby plant
+     *
+     * @param source the origin of the current fire
+     * @param i width-coordinate of the targeted plant
+     * @param j length-coordinate of the targeted plant
+     * @return the probability to ignite the targeted plant on fire
+     */
+    private double spreadingProbability(Vegetation source, Vegetation target, int i, int j){
+        Wind wind = this.forest.getWeather().getWind();
+        int xPos = source.getXPos();
+        int yPos = source.getYPos();
+
+        int dx = i - xPos;
+        int dy = j - yPos;
+
+        CardinalDirections spreadDirection = CardinalDirections.getDirection(dx, dy);
+
+        // Probabilites
+
+        double low = 0.01;
+        double medium = 0.5;
+        double high = 1;
+
+        if (wind.getWindDirection() == NEUTRAL) return medium * target.getFlammability() * this.weatherModifier;
+        int dot = spreadDirection.getXPos() * wind.getWindDirection().getXPos()
+                + spreadDirection.getYPos() * wind.getWindDirection().getYPos();
+
+        double base;
+
+        if (dot > 0){
+            base = high;
+        }
+        else if (dot < 0){
+            base = low;
+        }
+        else{
+            base = medium;
+        }
+
+        return base * target.getFlammability() * this.weatherModifier;
     }
 
 }

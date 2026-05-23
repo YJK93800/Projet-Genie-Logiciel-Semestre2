@@ -9,3 +9,7 @@ File explaining error types:
 
         - 401 : Flammability of the Tree, something went wrong in its initialization, although this error will never be
                 reached without triggering Error 400.
+
+    Simulation related Errors : the first digit will be 1
+
+        - 100 : Failed to ignite a cell, most likely tried to ignite a non Vegetation instance

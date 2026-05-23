@@ -18,4 +18,11 @@ public class BodyOfWater extends ForestCell{
         return 'W';
     }
 
+    //Override Method
+
+    @Override
+    public String display(){
+        return "🌊";
+    }
+
 }
