@@ -43,6 +43,25 @@ public class Grass extends Vegetation {
 
     //Override Methods
     @Override
+    public String display(){
+
+        switch(this.state){
+
+            case ALIVE:
+                return "🌿";
+
+            case BURNING:
+                return "🔥";
+
+            case DEAD:
+                return "⬛";
+
+            default:
+                return "?";
+        }
+    }
+
+    @Override
     public String toString(){
         String display = super.toString();
         display += "Type: Herbe" + "\n";

@@ -18,4 +18,11 @@ public class Soil extends ForestCell{
         return 'S';
     }
 
+    // Override
+
+    @Override
+    public String display(){
+        return "🟫";
+    }
+
 }

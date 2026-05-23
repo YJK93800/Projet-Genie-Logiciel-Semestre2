@@ -80,6 +80,24 @@ public abstract class Vegetation extends ForestCell {
         }
     }
 
+    public String getSymbol(){
+
+        switch(this.state){
+
+            case ALIVE:
+                return "🌿";
+
+            case BURNING:
+                return "🔥";
+
+            case DEAD:
+                return "⬛";
+
+            default:
+                return "?";
+        }
+    }
+
     //Override Methods
 
     @Override
