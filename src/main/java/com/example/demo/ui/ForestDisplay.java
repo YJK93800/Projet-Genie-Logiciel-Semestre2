@@ -16,17 +16,14 @@ public class ForestDisplay {
     }
 
     public Parent createContent() {
-
         Label forestLabel = new Label(forest.toString());
-
-        Button button = new Button("Afficher / Cacher");
-
+        Button button = new Button("Show / Hide");
+        button.getStyleClass().add("forest-button");
         button.setOnAction(e ->
                 forestLabel.setVisible(!forestLabel.isVisible())
         );
 
         VBox layout = new VBox(20, forestLabel, button);
-
         layout.setAlignment(Pos.CENTER);
 
         return layout;
