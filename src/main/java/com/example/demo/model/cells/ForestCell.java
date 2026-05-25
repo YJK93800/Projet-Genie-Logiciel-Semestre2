@@ -1,5 +1,7 @@
 package com.example.demo.model.cells;
 
+import javafx.scene.paint.Color;
+
 /**
  * Represents a cell within the forest
  * <p>
@@ -76,10 +78,19 @@ public abstract class ForestCell {
 
     /**
      * Method to return the emoji associated to the instance
+     * Used mostly on the terminal
      *
      * @return
      */
     public abstract String display();
+
+    /**
+     * Method to return the color associated to the instance
+     * Used on the graphic interface
+     *
+     * @return
+     */
+    public abstract Color displayColor();
 
     //Override Methods
 

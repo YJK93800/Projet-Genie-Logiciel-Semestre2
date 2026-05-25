@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 public class ForestDisplay {
 
     private Forest forest;
+    private GridPane grid;
 
     public ForestDisplay(Forest forest) {
         this.forest = forest;
@@ -20,48 +21,38 @@ public class ForestDisplay {
 
     public Parent createContent() {
 
-        GridPane grid = new GridPane();
+        grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
 
-        ForestCell[][] forestGrid = forest.getForestGrid();
+        draw();
 
+        return grid;
+    }
+    private void draw() {
+
+        grid.getChildren().clear();
+
+        ForestCell[][] forestGrid = forest.getForestGrid();
         int rows = forestGrid.length;
         int cols = forestGrid[0].length;
 
         for (int i = 0; i < rows; i++) {
-
             for (int j = 0; j < cols; j++) {
 
                 ForestCell cell = forestGrid[i][j];
 
                 Rectangle rect = new Rectangle(30, 30);
-
-                // Couleur selon le type
-                if (cell instanceof Tree) {
-                    rect.setFill(Color.rgb(34, 139, 34));
-                }
-
-                else if (cell instanceof Grass) {
-                    rect.setFill(Color.rgb(124, 252, 0));
-                }
-
-                else if (cell instanceof BodyOfWater) {
-                    rect.setFill(Color.rgb(30, 144, 255));
-                }
-
-                else if (cell instanceof Soil) {
-                    rect.setFill(Color.rgb(139, 69, 19));
-                }
-
-                // Bordure
+                rect.setFill(cell.displayColor());
                 rect.setStroke(Color.BLACK);
 
                 StackPane tile = new StackPane(rect);
-
                 grid.add(tile, j, i);
             }
         }
-
-        return grid;
     }
+    public void update() {
+        draw();
+    }
+
+
 }

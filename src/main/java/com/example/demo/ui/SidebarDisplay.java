@@ -1,11 +1,21 @@
 package com.example.demo.ui;
 
+import com.example.demo.simulation.Simulation;
 import com.example.demo.ui.Menu.WeatherMenuDisplay;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import java.util.function.Consumer;
 
 public class SidebarDisplay {
+
+    private Simulation simulation;
+    private Runnable refreshUI;
+
+    public SidebarDisplay(Simulation simulation, Runnable refreshUI){
+        this.simulation = simulation;
+        this.refreshUI = refreshUI;
+    }
 
     public Parent createContent() {
         VBox sidebar = new VBox();
@@ -27,11 +37,19 @@ public class SidebarDisplay {
         btnCellState.getStyleClass().add("nav-button");
         btnCellState.setOnAction(e -> System.out.println("Action: Modify fire state"));
 
+        Button nextTurn = new Button("=> Next Turn");
+        nextTurn.getStyleClass().add("nav-button");
+        nextTurn.setOnAction(e -> {
+            this.simulation.spreadFireOneTurn();
+            this.refreshUI.run();
+        });
+
         sidebar.getChildren().addAll(
                 btnSettings,
                 weatherComponent.createMenu(),
                 btnPlant,
-                btnCellState
+                btnCellState,
+                nextTurn
         );
 
         return sidebar;

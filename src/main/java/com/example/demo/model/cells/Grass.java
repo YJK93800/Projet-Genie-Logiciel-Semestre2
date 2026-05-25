@@ -1,5 +1,7 @@
 package com.example.demo.model.cells;
 
+import javafx.scene.paint.Color;
+
 public class Grass extends Vegetation {
 
     private GrassType type;
@@ -42,6 +44,20 @@ public class Grass extends Vegetation {
 
 
     //Override Methods
+    @Override
+    public Color displayColor() {
+
+        if (this.state == State.BURNING) {
+            return Color.ORANGE;
+        }
+
+        if (this.state == State.DEAD) {
+            return Color.BLACK;
+        }
+
+        return Color.LIGHTGREEN;
+    }
+
     @Override
     public String display(){
 
