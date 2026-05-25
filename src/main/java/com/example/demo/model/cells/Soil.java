@@ -1,5 +1,7 @@
 package com.example.demo.model.cells;
 
+import javafx.scene.paint.Color;
+
 /**
  * Represents the soil, a dirt path within the forest
  * <p>
@@ -19,6 +21,10 @@ public class Soil extends ForestCell{
     }
 
     // Override
+    @Override
+    public Color displayColor() {
+        return Color.SADDLEBROWN;
+    }
 
     @Override
     public String display(){

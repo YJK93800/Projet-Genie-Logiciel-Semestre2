@@ -1,6 +1,7 @@
 package com.example.demo.model.cells;
 
 import com.example.demo.exceptions.TreeException;
+import javafx.scene.paint.Color;
 
 public class Tree extends Vegetation {
 
@@ -106,6 +107,20 @@ public class Tree extends Vegetation {
 
 
     //Override
+    @Override
+    public Color displayColor() {
+
+        if (this.state == State.BURNING) {
+            return Color.ORANGE;
+        }
+
+        if (this.state == State.DEAD) {
+            return Color.BLACK;
+        }
+
+        return Color.FORESTGREEN;
+    }
+
     @Override
     public String display(){
 

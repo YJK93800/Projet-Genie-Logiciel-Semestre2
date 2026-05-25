@@ -1,5 +1,7 @@
 package com.example.demo.model.cells;
 
+import javafx.scene.paint.Color;
+
 /**
  * Represents a body of water, river, lake, etc..
  * <p>
@@ -19,6 +21,11 @@ public class BodyOfWater extends ForestCell{
     }
 
     //Override Method
+
+    @Override
+    public Color displayColor() {
+        return Color.DEEPSKYBLUE;
+    }
 
     @Override
     public String display(){

@@ -5,6 +5,7 @@ import com.example.demo.model.Weather.CardinalDirections;
 import com.example.demo.model.Weather.Weather;
 import com.example.demo.model.Weather.WeatherType;
 import com.example.demo.model.Weather.Wind;
+import com.example.demo.simulation.Simulation;
 import com.example.demo.ui.ForestDisplay;
 import com.example.demo.ui.SidebarDisplay;
 import javafx.application.Application;
@@ -17,14 +18,18 @@ public class MainInterface extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        Weather weather = new Weather(WeatherType.SUNNY, new Wind(CardinalDirections.EAST, 100), 30.5, 50.9, 86.25);
+        Weather weather = new Weather(WeatherType.SUNNY, new Wind(CardinalDirections.NEUTRAL, 100), 30.5, 50.9, 86.25);
         Forest forest = new Forest("forestTest.txt", weather);
+        Simulation simulation = new Simulation(forest);
+        simulation.ignitePlant(0,0);
 
-        ForestDisplay view = new ForestDisplay(forest);
+        ForestDisplay view = new ForestDisplay(simulation.getForest());
         BorderPane root = new BorderPane();
-        SidebarDisplay sidebarComponent = new SidebarDisplay();
+        SidebarDisplay sidebar = new SidebarDisplay(simulation, () -> {
+            view.update(); // ou recreate
+        });
 
-        root.setLeft(sidebarComponent.createContent());
+        root.setLeft(sidebar.createContent());
         root.setCenter(view.createContent());
 
         Scene scene = new Scene(root, 1050, 700);
