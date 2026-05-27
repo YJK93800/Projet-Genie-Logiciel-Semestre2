@@ -1,20 +1,28 @@
 package com.example.demo.ui;
 
 import com.example.demo.simulation.Simulation;
+import com.example.demo.ui.Menu.NewForestPopUp;
 import com.example.demo.ui.Menu.WeatherMenuDisplay;
+import com.example.demo.ui.actions.UIController;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import java.util.function.Consumer;
 
 public class SidebarDisplay {
 
     private Simulation simulation;
+    private BorderPane root;
     private Runnable refreshUI;
+    private UIController controller;
 
-    public SidebarDisplay(Simulation simulation, Runnable refreshUI){
+    public SidebarDisplay(Simulation simulation, Runnable refreshUI, BorderPane root, UIController controller){
         this.simulation = simulation;
         this.refreshUI = refreshUI;
+        this.root = root;
+        this.controller = controller;
     }
 
     public Parent createContent() {
@@ -22,6 +30,14 @@ public class SidebarDisplay {
         sidebar.getStyleClass().add("sidebar");
         sidebar.setSpacing(15);
         sidebar.setPrefWidth(240);
+
+
+        // Button to create a new Forest
+        Button NewForest = new Button("+  New");
+        NewForest.getStyleClass().add("nav-button");
+        NewForest.setOnAction(e -> {
+            controller.newForestAction();
+        });
 
         Button btnSettings = new Button("⚙  Settings");
         btnSettings.getStyleClass().add("nav-button");
@@ -45,6 +61,7 @@ public class SidebarDisplay {
         });
 
         sidebar.getChildren().addAll(
+                NewForest,
                 btnSettings,
                 weatherComponent.createMenu(),
                 btnPlant,
