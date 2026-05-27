@@ -101,7 +101,7 @@ public class Tree extends Vegetation {
             case ACACIA:
                 return 0.05;
             default:
-                throw new TreeException("ERROR 401 : Unknown Tree specie");
+                return 0.25;
         }
     }
 

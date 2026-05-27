@@ -8,6 +8,7 @@ import com.example.demo.model.Weather.Wind;
 import com.example.demo.simulation.Simulation;
 import com.example.demo.ui.ForestDisplay;
 import com.example.demo.ui.SidebarDisplay;
+import com.example.demo.ui.actions.UIController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -25,9 +26,11 @@ public class MainInterface extends Application {
 
         ForestDisplay view = new ForestDisplay(simulation.getForest());
         BorderPane root = new BorderPane();
+        UIController controller = new UIController(root);
+
         SidebarDisplay sidebar = new SidebarDisplay(simulation, () -> {
-            view.update(); // ou recreate
-        });
+            view.update();
+        }, root, controller);
 
         root.setLeft(sidebar.createContent());
         root.setCenter(view.createContent());
