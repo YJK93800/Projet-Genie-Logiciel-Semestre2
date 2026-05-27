@@ -1,7 +1,9 @@
 package com.example.demo.ui;
 
 import com.example.demo.simulation.Simulation;
+import com.example.demo.ui.Menu.EnvironmentMenuDisplay;
 import com.example.demo.ui.Menu.NewForestPopUp;
+import com.example.demo.ui.Menu.PlantMenuDisplay;
 import com.example.demo.ui.Menu.WeatherMenuDisplay;
 import com.example.demo.ui.actions.UIController;
 import javafx.scene.Parent;
@@ -44,10 +46,8 @@ public class SidebarDisplay {
         btnSettings.setOnAction(e -> System.out.println("Open Settings"));
 
         WeatherMenuDisplay weatherComponent = new WeatherMenuDisplay();
-
-        Button btnPlant = new Button("🌱  Plant Type");
-        btnPlant.getStyleClass().add("nav-button");
-        btnPlant.setOnAction(e -> System.out.println("Action: Change vegetation type"));
+        PlantMenuDisplay plantComponent = new PlantMenuDisplay();
+        EnvironmentMenuDisplay environmentComponent = new EnvironmentMenuDisplay();
 
         Button btnCellState = new Button("🔥  Cell State");
         btnCellState.getStyleClass().add("nav-button");
@@ -64,7 +64,8 @@ public class SidebarDisplay {
                 NewForest,
                 btnSettings,
                 weatherComponent.createMenu(),
-                btnPlant,
+                plantComponent.createMenu(),
+                environmentComponent.createMenu(),
                 btnCellState,
                 nextTurn
         );
