@@ -6,6 +6,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+
+/**
+ * Pop up Window during the creation of a new Forest
+ * <p>
+ * @author Yann Kong IN1 GI1
+ * @version 21.0.8
+ */
+
 public class NewForestPopUp {
 
     private Runnable onFinish;
@@ -53,4 +61,5 @@ public class NewForestPopUp {
         popup.setScene(new Scene(layout, 250, 200));
         popup.showAndWait();
     }
+    
 }

@@ -1,5 +1,6 @@
 package com.example.demo.ui.actions;
 
+import com.example.demo.ui.Editor;
 import com.example.demo.ui.Menu.NewForestPopUp;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -7,6 +8,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+/**
+ * Class in charge of the UI actions
+ * <p>
+ * @author Yann Kong IN1 GI1
+ * @version 21.0.8
+ */
 
 public class UIController {
 
@@ -37,6 +45,8 @@ public class UIController {
                     Rectangle rect = new Rectangle(20, 20);
                     rect.setFill(Color.LIGHTGRAY);
                     rect.setStroke(Color.BLACK);
+
+                    rect.setOnMouseClicked(e -> rect.setFill(FillCell.getColor()));
 
                     grid.add(rect, j, i);
                 }
