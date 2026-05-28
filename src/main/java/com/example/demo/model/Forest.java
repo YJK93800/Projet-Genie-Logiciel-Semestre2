@@ -138,8 +138,8 @@ public class Forest {
         int cellWidth = 10;
         int cellHeight = 10;
 
-        int gridCol = imgWidth/cellWidth + 1
-        int gridRow = imgHeight/cellHeight + 1
+        int gridCol = imgWidth/cellWidth + 1;
+        int gridRow = imgHeight/cellHeight + 1;
 
         int[][][] result = new int[gridRow][gridCol][3];
 
