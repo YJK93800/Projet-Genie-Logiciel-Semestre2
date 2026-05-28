@@ -1,7 +1,9 @@
 package com.example.demo.ui.Menu;
 
 import com.example.demo.model.Weather.CardinalDirections;
+import com.example.demo.model.Weather.Weather;
 import com.example.demo.model.Weather.WeatherType;
+import com.example.demo.model.Weather.Wind;
 import javafx.geometry.Pos;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -11,37 +13,80 @@ import javafx.scene.layout.VBox;
 
 public class WeatherMenuDisplay extends AbstractMenuDisplay {
 
-    public WeatherMenuDisplay() {
+    private Weather weather;
+
+    public WeatherMenuDisplay(Weather weather) {
         super("🌤  Weather");
+        this.weather = weather;
     }
 
     @Override
     protected void buildSubMenuContent(VBox subMenuContainer) {
-        HBox tempRow = createInputField("Temperature (°C):", "25.0");
+        HBox tempRow = createInputField("Temperature (°C):", String.valueOf(weather.getTemperature()));
         TextField tempField = (TextField) tempRow.getChildren().get(1);
-        tempField.setOnAction(e -> System.out.println("Terminal -> Temperature updated: " + tempField.getText() + "°C"));
+        tempField.setOnAction(e -> {
+            try {
+                double val = Double.parseDouble(tempField.getText());
+                weather.setTemperature(val);
+                System.out.println("Terminal -> Temperature updated: " + val + "°C");
+            } catch (NumberFormatException ex) {
+                System.out.println("Terminal -> Invalid temperature value");
+            }
+        });
 
-        HBox humidityRow = createInputField("Humidity (%):", "50.0");
+        HBox humidityRow = createInputField("Humidity (%):", String.valueOf(weather.getHumidity()));
         TextField humidityField = (TextField) humidityRow.getChildren().get(1);
-        humidityField.setOnAction(e -> System.out.println("Terminal -> Humidity updated: " + humidityField.getText() + "%"));
+        humidityField.setOnAction(e -> {
+            try {
+                double val = Double.parseDouble(humidityField.getText());
+                weather.setHumidity(val);
+                System.out.println("Terminal -> Humidity updated: " + val + "%");
+            } catch (NumberFormatException ex) {
+                System.out.println("Terminal -> Invalid humidity value");
+            }
+        });
 
-        HBox sunRow = createInputField("Sun Intensity:", "86.25");
+        HBox sunRow = createInputField("Sun Intensity:", String.valueOf(weather.getSunlightIntensity()));
         TextField sunField = (TextField) sunRow.getChildren().get(1);
-        sunField.setOnAction(e -> System.out.println("Terminal -> Sun Intensity updated: " + sunField.getText()));
+        sunField.setOnAction(e -> {
+            try {
+                double val = Double.parseDouble(sunField.getText());
+                weather.setSunlightIntensity(val);
+                System.out.println("Terminal -> Sun Intensity updated: " + val);
+            } catch (NumberFormatException ex) {
+                System.out.println("Terminal -> Invalid sun intensity value");
+            }
+        });
 
-        HBox windSpeedRow = createInputField("Wind Speed:", "100.0");
+        HBox windSpeedRow = createInputField("Wind Speed:", String.valueOf(weather.getWind().getWindSpeed()));
         TextField windSpeedField = (TextField) windSpeedRow.getChildren().get(1);
-        windSpeedField.setOnAction(e -> System.out.println("Terminal -> Wind Speed updated: " + windSpeedField.getText() + " km/h"));
+        windSpeedField.setOnAction(e -> {
+            try {
+                double val = Double.parseDouble(windSpeedField.getText());
+                CardinalDirections currentDir = weather.getWind().getWindDirection();
+                weather.setWind(new Wind(currentDir, val));
+                System.out.println("Terminal -> Wind Speed updated: " + val + " km/h");
+            } catch (NumberFormatException ex) {
+                System.out.println("Terminal -> Invalid wind speed value");
+            }
+        });
 
-        HBox typeRow = createDropdownField("Weather Type:", WeatherType.values(), WeatherType.SUNNY);
+        HBox typeRow = createDropdownField("Weather Type:", WeatherType.values(), weather.getWeatherType());
         @SuppressWarnings("unchecked")
         ChoiceBox<WeatherType> typeChoice = (ChoiceBox<WeatherType>) typeRow.getChildren().get(1);
-        typeChoice.setOnAction(e -> System.out.println("Terminal -> Selected weather type: " + typeChoice.getValue()));
+        typeChoice.setOnAction(e -> {
+            weather.setWeatherType(typeChoice.getValue());
+            System.out.println("Terminal -> Selected weather type: " + typeChoice.getValue());
+        });
 
-        HBox directionRow = createDropdownField("Wind Direction:", CardinalDirections.values(), CardinalDirections.EAST);
+        HBox directionRow = createDropdownField("Wind Direction:", CardinalDirections.values(), weather.getWind().getWindDirection());
         @SuppressWarnings("unchecked")
         ChoiceBox<CardinalDirections> directionChoice = (ChoiceBox<CardinalDirections>) directionRow.getChildren().get(1);
-        directionChoice.setOnAction(e -> System.out.println("Terminal -> Selected wind direction: " + directionChoice.getValue()));
+        directionChoice.setOnAction(e -> {
+            double currentSpeed = weather.getWind().getWindSpeed();
+            weather.setWind(new Wind(directionChoice.getValue(), currentSpeed));
+            System.out.println("Terminal -> Selected wind direction: " + directionChoice.getValue());
+        });
 
         subMenuContainer.getChildren().addAll(tempRow, humidityRow, sunRow, windSpeedRow, typeRow, directionRow);
     }

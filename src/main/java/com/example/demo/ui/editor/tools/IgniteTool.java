@@ -1,10 +1,8 @@
 package com.example.demo.ui.editor.tools;
 
 import com.example.demo.model.cells.ForestCell;
-import com.example.demo.model.cells.Vegetation;
 import javafx.scene.paint.Color;
 
-import static com.example.demo.model.cells.State.BURNING;
 
 /**
  * Represents the tool used to Ignite cells in the forest grid

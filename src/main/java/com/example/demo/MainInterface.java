@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.model.Forest;
 import com.example.demo.model.Weather.*;
 import com.example.demo.simulation.Simulation;
+import com.example.demo.ui.BottomBarDisplay;
 import com.example.demo.ui.ForestDisplay;
 import com.example.demo.ui.SidebarDisplay;
 import com.example.demo.ui.actions.UIController;
@@ -19,7 +20,9 @@ public class MainInterface extends Application {
         Weather weather = new Weather(
                 WeatherType.SUNNY,
                 new Wind(CardinalDirections.SOUTH, 100),
-                30.5, 50.9, 86.25
+                30.5,
+                50.9,
+                86.25
         );
 
         Forest forest = new Forest("forestTest.txt", weather);
@@ -30,7 +33,6 @@ public class MainInterface extends Application {
 
         ForestDisplay view = new ForestDisplay(simulation.getForest());
 
-        // Placeholder pour sidebar (résout le problème de circular reference)
         final SidebarDisplay[] sidebarHolder = new SidebarDisplay[1];
 
         UIController controller = new UIController(root, view, sim -> {
@@ -46,8 +48,13 @@ public class MainInterface extends Application {
 
         sidebarHolder[0] = sidebar;
 
+        BottomBarDisplay bottomBar = new BottomBarDisplay(simulation, () -> {
+            view.update();
+        });
+
         root.setLeft(sidebar.createContent());
         root.setCenter(view.createContent());
+        root.setBottom(bottomBar.createContent());
 
         Scene scene = new Scene(root, 1050, 700);
 
