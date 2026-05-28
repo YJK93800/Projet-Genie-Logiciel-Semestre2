@@ -6,6 +6,7 @@ import com.example.demo.model.Weather.Weather;
 import com.example.demo.model.Weather.WeatherType;
 import com.example.demo.model.Weather.Wind;
 import com.example.demo.simulation.Simulation;
+import com.example.demo.ui.BottomBarDisplay;
 import com.example.demo.ui.ForestDisplay;
 import com.example.demo.ui.SidebarDisplay;
 import com.example.demo.ui.actions.UIController;
@@ -32,8 +33,13 @@ public class MainInterface extends Application {
             view.update();
         }, root, controller);
 
+        BottomBarDisplay bottomBar = new BottomBarDisplay(simulation, () -> {
+            view.update();
+        });
+
         root.setLeft(sidebar.createContent());
         root.setCenter(view.createContent());
+        root.setBottom(bottomBar.createContent());
 
         Scene scene = new Scene(root, 1050, 700);
 
