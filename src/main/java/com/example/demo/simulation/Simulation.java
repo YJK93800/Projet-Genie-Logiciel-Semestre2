@@ -251,8 +251,8 @@ public class Simulation {
         // Probabilites
 
         double low = 0.5;
-        double medium = 1;
-        double high = 3;
+        double medium = 3;
+        double high = 5;
 
         if (wind.getWindDirection() == NEUTRAL) return medium * target.getFlammability() * this.weatherModifier;
         int dot = spreadDirection.getXPos() * wind.getWindDirection().getXPos()

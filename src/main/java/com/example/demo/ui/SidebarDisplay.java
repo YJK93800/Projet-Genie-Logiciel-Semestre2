@@ -2,16 +2,17 @@ package com.example.demo.ui;
 
 import com.example.demo.simulation.Simulation;
 import com.example.demo.ui.Menu.EnvironmentMenuDisplay;
-import com.example.demo.ui.Menu.NewForestPopUp;
 import com.example.demo.ui.Menu.PlantMenuDisplay;
 import com.example.demo.ui.Menu.WeatherMenuDisplay;
 import com.example.demo.ui.actions.UIController;
+import com.example.demo.ui.editor.Editor;
+import com.example.demo.ui.editor.tools.GrassTool;
+import com.example.demo.ui.editor.tools.IgniteTool;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import java.util.function.Consumer;
 
 public class SidebarDisplay {
 
@@ -49,27 +50,44 @@ public class SidebarDisplay {
         PlantMenuDisplay plantComponent = new PlantMenuDisplay();
         EnvironmentMenuDisplay environmentComponent = new EnvironmentMenuDisplay();
 
-        Button btnCellState = new Button("🔥  Cell State");
+        Button btnCellState = new Button("🔥  Ignite Plant");
         btnCellState.getStyleClass().add("nav-button");
-        btnCellState.setOnAction(e -> System.out.println("Action: Modify fire state"));
+        btnCellState.setOnAction(e -> {
+            Editor.setCurrentTool(new IgniteTool());
+            System.out.println("Ignite selected");
+        });
 
         Button nextTurn = new Button("=> Next Turn");
         nextTurn.getStyleClass().add("nav-button");
         nextTurn.setOnAction(e -> {
             this.simulation.spreadFireOneTurn();
-            this.refreshUI.run();
+            Platform.runLater(() -> this.refreshUI.run());
         });
 
-        sidebar.getChildren().addAll(
+        Button test = new Button("Test");
+        test.getStyleClass().add("nav-button");
+        test.setOnAction(e -> System.out.println(this.simulation.getForest()));
+
+                sidebar.getChildren().addAll(
                 NewForest,
                 btnSettings,
                 weatherComponent.createMenu(),
                 plantComponent.createMenu(),
                 environmentComponent.createMenu(),
                 btnCellState,
-                nextTurn
+                nextTurn,
+                test
         );
 
         return sidebar;
     }
+
+    // Setter method
+
+    /**
+     * Setter method for the simulation attribute
+     *
+     * @param simulation new simulation that will be used
+     */
+    public void setSimulation(Simulation simulation){this.simulation = simulation;}
 }
