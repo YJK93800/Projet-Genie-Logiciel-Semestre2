@@ -61,5 +61,5 @@ public class NewForestPopUp {
         popup.setScene(new Scene(layout, 250, 200));
         popup.showAndWait();
     }
-    
+
 }
