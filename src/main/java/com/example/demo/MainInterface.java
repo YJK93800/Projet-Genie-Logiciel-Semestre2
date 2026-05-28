@@ -37,6 +37,7 @@ public class MainInterface extends Application {
 
         UIController controller = new UIController(root, view, sim -> {
             sidebarHolder[0].setSimulation(sim);
+            sidebarHolder[0].refresh();
         });
 
         SidebarDisplay sidebar = new SidebarDisplay(

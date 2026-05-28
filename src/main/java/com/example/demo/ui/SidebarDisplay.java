@@ -6,7 +6,6 @@ import com.example.demo.ui.Menu.PlantMenuDisplay;
 import com.example.demo.ui.Menu.WeatherMenuDisplay;
 import com.example.demo.ui.actions.UIController;
 import com.example.demo.ui.editor.Editor;
-import com.example.demo.ui.editor.tools.GrassTool;
 import com.example.demo.ui.editor.tools.IgniteTool;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -20,8 +19,9 @@ public class SidebarDisplay {
     private BorderPane root;
     private Runnable refreshUI;
     private UIController controller;
+    private VBox sidebar;
 
-    public SidebarDisplay(Simulation simulation, Runnable refreshUI, BorderPane root, UIController controller){
+    public SidebarDisplay(Simulation simulation, Runnable refreshUI, BorderPane root, UIController controller) {
         this.simulation = simulation;
         this.refreshUI = refreshUI;
         this.root = root;
@@ -29,18 +29,28 @@ public class SidebarDisplay {
     }
 
     public Parent createContent() {
-        VBox sidebar = new VBox();
+        sidebar = new VBox();
         sidebar.getStyleClass().add("sidebar");
         sidebar.setSpacing(15);
         sidebar.setPrefWidth(240);
 
+        buildSidebarChildren();
 
-        // Button to create a new Forest
-        Button NewForest = new Button("+  New");
-        NewForest.getStyleClass().add("nav-button");
-        NewForest.setOnAction(e -> {
-            controller.newForestAction();
-        });
+        return sidebar;
+    }
+
+    public void refresh() {
+        if (sidebar != null) {
+            sidebar.getChildren().clear();
+            buildSidebarChildren();
+        }
+    }
+
+    private void buildSidebarChildren() {
+
+        Button newForest = new Button("+  New");
+        newForest.getStyleClass().add("nav-button");
+        newForest.setOnAction(e -> controller.newForestAction());
 
         Button btnSettings = new Button("⚙  Settings");
         btnSettings.getStyleClass().add("nav-button");
@@ -68,8 +78,8 @@ public class SidebarDisplay {
         test.getStyleClass().add("nav-button");
         test.setOnAction(e -> System.out.println(this.simulation.getForest()));
 
-                sidebar.getChildren().addAll(
-                NewForest,
+        sidebar.getChildren().addAll(
+                newForest,
                 btnSettings,
                 weatherComponent.createMenu(),
                 plantComponent.createMenu(),
@@ -78,16 +88,16 @@ public class SidebarDisplay {
                 nextTurn,
                 test
         );
-
-        return sidebar;
     }
 
     // Setter method
 
     /**
-     * Setter method for the simulation attribute
+     * Setter method for the simulation attribute.
      *
      * @param simulation new simulation that will be used
      */
-    public void setSimulation(Simulation simulation){this.simulation = simulation;}
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
 }
