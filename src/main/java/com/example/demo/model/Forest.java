@@ -33,6 +33,14 @@ public class Forest {
 
     }
 
+    /**
+     * Second Constructor Method
+     */
+
+    public Forest(Weather weather){
+        this.weather = weather;
+    }
+
     // Getter methods
 
     /**
@@ -48,6 +56,10 @@ public class Forest {
      * @return self-explanatory
      */
     public Weather getWeather(){return this.weather;}
+
+    // Setter methods
+
+    public void setForestGrid(ForestCell[][] forestGrid){this.forestGrid = forestGrid;}
 
     // Methods
 
