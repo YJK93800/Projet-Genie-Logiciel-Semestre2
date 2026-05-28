@@ -45,10 +45,18 @@ public class UIController {
                     Rectangle rect = new Rectangle(20, 20);
                     rect.setFill(Color.LIGHTGRAY);
                     rect.setStroke(Color.BLACK);
+                    StackPane tile = new StackPane(rect);
 
-                    rect.setOnMouseClicked(e -> rect.setFill(FillCell.getColor()));
-
-                    grid.add(rect, j, i);
+                    tile.setOnDragDetected(e -> {
+                        tile.startFullDrag();
+                    });
+                    tile.setOnMouseDragEntered(e -> {
+                        rect.setFill(FillCell.getColor());
+                    });
+                    tile.setOnMouseClicked(e ->
+                            rect.setFill(FillCell.getColor())
+                    );
+                    grid.add(tile, j, i);
                 }
             }
 
