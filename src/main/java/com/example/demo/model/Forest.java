@@ -11,6 +11,8 @@ import java.nio.file.Paths;
 import java.io.IOException;
 import java.util.List;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Represents the forest
  * <p>
@@ -120,6 +122,63 @@ public class Forest {
             if (lines.get(i).length() > max) max = lines.get(i).length();
         }
         return max;
+    }
+
+    /**
+     * Method to divide an image into a grid and get the average RGB color distribution per cell
+     *
+     * @param image BufferedImage, source image
+     * @return tab[rows][cols][3] containing the average RGB color distribution for each cell of the grid created
+     */
+    public static int[][][] gridColors(BufferedImage image) {
+
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+
+        int cellWidth = 10;
+        int cellHeight = 10;
+
+        int gridCol = imgWidth/cellWidth + 1
+        int gridRow = imgHeight/cellHeight + 1
+
+        int[][][] result = new int[gridRow][gridCol][3];
+
+        for (int row = 0; row < gridRow; row++) {
+            for (int col = 0; col < gridCol; col++) {
+
+                long sumR = 0;
+                long sumG = 0;
+                long sumB = 0;
+                int countPixel = 0;
+
+                int xStart = col * cellWidth;
+                int yStart = row * cellHeight;
+                int xEnd = (col + 1 == gridCol) ? imgWidth : xStart + cellWidth;
+                int yEnd = (row + 1 == gridRow) ? imgHeight : yStart + cellHeight;
+
+                for (int y = yStart; y < yEnd; y++) {
+                    for (int x = xStart; x < xEnd; x++) {
+
+                        int rgb = image.getRGB(x, y);
+
+                        int r = ((rgb >> 16) & 0xFF);
+                        int g = ((rgb >> 8) & 0xFF);
+                        int b = (rgb & 0xFF);
+
+                        sumR += r;
+                        sumG += g;
+                        sumB += b;
+                        countPixel++;
+                    }
+                }
+
+                result[row][col][0] = (int) (sumR / countPixel);
+                result[row][col][1] = (int) (sumG / countPixel);
+                result[row][col][2] = (int) (sumB / countPixel);
+            }
+        }
+
+        return result;
     }
 
     //Override Methods
