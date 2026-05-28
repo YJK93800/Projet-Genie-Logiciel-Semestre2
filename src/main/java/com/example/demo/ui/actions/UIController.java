@@ -1,7 +1,8 @@
 package com.example.demo.ui.actions;
 
-import com.example.demo.ui.Editor;
 import com.example.demo.ui.Menu.NewForestPopUp;
+import com.example.demo.ui.editor.Editor;
+import com.example.demo.ui.editor.tools.FillCell;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -51,10 +52,10 @@ public class UIController {
                         tile.startFullDrag();
                     });
                     tile.setOnMouseDragEntered(e -> {
-                        rect.setFill(FillCell.getColor());
+                        rect.setFill(Editor.getCurrentColor());
                     });
                     tile.setOnMouseClicked(e ->
-                            rect.setFill(FillCell.getColor())
+                            rect.setFill(Editor.getCurrentColor())
                     );
                     grid.add(tile, j, i);
                 }

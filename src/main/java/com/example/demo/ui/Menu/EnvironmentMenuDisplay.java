@@ -1,7 +1,8 @@
 package com.example.demo.ui.Menu;
 
-import com.example.demo.model.cells.TreeSpecies;
-import com.example.demo.ui.Editor;
+import com.example.demo.ui.editor.Editor;
+import com.example.demo.ui.editor.tools.SoilTool;
+import com.example.demo.ui.editor.tools.WaterTool;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -9,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import static com.example.demo.ui.EditorMode.*;
 
 /**
  * Menu display of the environmental elements of a forest
@@ -33,7 +33,7 @@ public class EnvironmentMenuDisplay extends AbstractMenuDisplay {
         waterButton.getStyleClass().add("nav-button");
         waterButton.setOnAction(e ->
                 {
-                    Editor.switchMode(WATER);
+                    Editor.setCurrentTool(new WaterTool());
                     System.out.println("Water selected");
                 }
         );
@@ -43,7 +43,7 @@ public class EnvironmentMenuDisplay extends AbstractMenuDisplay {
         soilButton.getStyleClass().add("nav-button");
         soilButton.setOnAction(e ->
                 {
-                    Editor.switchMode(SOIL);
+                    Editor.setCurrentTool(new SoilTool());
                     System.out.println("Soil selected");
                 }
         );
