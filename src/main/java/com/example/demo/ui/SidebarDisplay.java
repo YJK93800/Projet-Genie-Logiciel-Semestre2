@@ -45,7 +45,7 @@ public class SidebarDisplay {
         btnSettings.getStyleClass().add("nav-button");
         btnSettings.setOnAction(e -> System.out.println("Open Settings"));
 
-        WeatherMenuDisplay weatherComponent = new WeatherMenuDisplay();
+        WeatherMenuDisplay weatherComponent = new WeatherMenuDisplay(simulation.getForest().getWeather());
         PlantMenuDisplay plantComponent = new PlantMenuDisplay();
         EnvironmentMenuDisplay environmentComponent = new EnvironmentMenuDisplay();
 
@@ -53,21 +53,13 @@ public class SidebarDisplay {
         btnCellState.getStyleClass().add("nav-button");
         btnCellState.setOnAction(e -> System.out.println("Action: Modify fire state"));
 
-        Button nextTurn = new Button("=> Next Turn");
-        nextTurn.getStyleClass().add("nav-button");
-        nextTurn.setOnAction(e -> {
-            this.simulation.spreadFireOneTurn();
-            this.refreshUI.run();
-        });
-
         sidebar.getChildren().addAll(
                 NewForest,
                 btnSettings,
                 weatherComponent.createMenu(),
                 plantComponent.createMenu(),
                 environmentComponent.createMenu(),
-                btnCellState,
-                nextTurn
+                btnCellState
         );
 
         return sidebar;
