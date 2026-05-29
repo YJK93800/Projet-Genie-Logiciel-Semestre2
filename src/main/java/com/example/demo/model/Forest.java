@@ -230,7 +230,7 @@ public class Forest {
 
                 int minDist = min(treeDist, min(grassDist, min(waterDist, soilDist)));
 
-                if (minDist == treeDist) forestGrid[i][j] = new Tree("Arbre", State.ALIVE, i, j, 0, T);
+                if (minDist == treeDist) forestGrid[i][j] = new Tree("Arbre", State.ALIVE, i, j, 0, 'O');
                 else if (minDist == grassDist) forestGrid[i][j] = new Grass("Herbe", State.ALIVE, i, j, 0, GrassType.SMALL);
                 else if (minDist == waterDist) forestGrid[i][j] = new BodyOfWater("Eau", i, j, 0);
                 else if (minDist == soilDist) forestGrid[i][j] = new Soil("Terre", i, j, 0);
