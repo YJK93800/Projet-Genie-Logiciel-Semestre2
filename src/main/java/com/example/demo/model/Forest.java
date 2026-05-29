@@ -13,6 +13,8 @@ import java.util.List;
 
 import java.awt.image.BufferedImage;
 
+import static java.lang.Math.min;
+
 /**
  * Represents the forest
  * <p>
@@ -128,7 +130,7 @@ public class Forest {
      * Method to divide an image into a grid and get the average RGB color distribution per cell
      *
      * @param image BufferedImage, source image
-     * @return tab[rows][cols][3] containing the average RGB color distribution for each cell of the grid created
+     * @return int[rows][cols][3] containing the average RGB color distribution for each cell of the grid created
      */
     public static int[][][] gridColors(BufferedImage image) {
 
@@ -180,6 +182,64 @@ public class Forest {
 
         return result;
     }
+
+    /**
+     * Method to calculate the squared distance from an RGB distribution to another
+     *
+     * @param r1 int, red from first distribution
+     * @param g1 int, green from first distribution
+     * @param b1 int, blue from first distribution
+     * @param r2 int, red from second distribution
+     * @param g2 int, green from second distribution
+     * @param b2 int, blue from second distribution
+     * @return int, squared distance between first and second RGB distribution
+     */
+    private static int colorDistanceSquared(int r1, int g1, int b1, int r2, int g2, int b2) {
+
+        int dr = r1 - r2;
+        int dg = g1 - g2;
+        int db = b1 - b2;
+
+        return dr*dr + dg*dg + db*db;
+    }
+
+    /**
+     * Method to convert a grid of RGB distributions to a forest grid
+     *
+     * @param colorGrid int[][][] a grid containing RGB distributions
+     * @return ForestCell[][], the forest grid corresponding best to the colors
+     */
+    public static ForestCell[][] convertColorGrid(int[][][] colorGrid) {
+
+        int gridRow = colorGrid.length;
+        int gridCol = colorGrid[0].length;
+
+        ForestCell[][] forestGrid = new ForestCell[gridRow][gridCol];
+
+        for (int i = 0; i < gridRow; i++) {
+            for (int j = 0; j < gridCol; j++) {
+
+                int r = colorGrid[i][j][0];
+                int g = colorGrid[i][j][1];
+                int b = colorGrid[i][j][2];
+
+                int treeDist = colorDistanceSquared(r, g, b, 20, 90, 20);
+                int grassDist = colorDistanceSquared(r, g, b, 120, 220, 120);
+                int waterDist = colorDistanceSquared(r, g, b, 40, 100, 220);
+                int soilDist = colorDistanceSquared(r, g, b, 120, 80, 40);
+
+                int minDist = min(treeDist, min(grassDist, min(waterDist, soilDist)));
+
+                if (minDist == treeDist) forestGrid[i][j] = new Tree("Arbre", State.ALIVE, i, j, 0, T);
+                else if (minDist == grassDist) forestGrid[i][j] = new Grass("Herbe", State.ALIVE, i, j, 0, GrassType.SMALL);
+                else if (minDist == waterDist) forestGrid[i][j] = new BodyOfWater("Eau", i, j, 0);
+                else if (minDist == soilDist) forestGrid[i][j] = new Soil("Terre", i, j, 0);
+            }
+        }
+
+        return forestGrid;
+    }
+
 
     //Override Methods
 
