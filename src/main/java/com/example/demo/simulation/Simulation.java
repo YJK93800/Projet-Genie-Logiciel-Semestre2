@@ -31,6 +31,7 @@ public class Simulation {
     private double weatherModifier;
     private int turn = 0;
     private HashSet<Vegetation> burningPlants = new HashSet<>();
+    private HashSet<Vegetation> alivePlants = new HashSet<>();
 
     /**
      * Constructor method
@@ -40,6 +41,7 @@ public class Simulation {
     public Simulation(Forest forest){
         this.forest = forest;
         this.weatherModifier = initializeWeatherModifier();
+        initializeAlivePlants();
     }
 
     // Getter methods
@@ -79,6 +81,8 @@ public class Simulation {
      */
     public HashSet<Vegetation> getBurningPlants(){return this.burningPlants;}
 
+    public HashSet<Vegetation> getAlivePlants() { return this.alivePlants; }
+
     // Methods
 
     /**
@@ -101,6 +105,23 @@ public class Simulation {
         return weatherModifier;
     }
 
+    private void initializeAlivePlants() {
+        this.alivePlants.clear();
+        ForestCell[][] grid = this.forest.getForestGrid();
+        if (grid == null) return;
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] instanceof Vegetation) {
+                    Vegetation veg = (Vegetation) grid[i][j];
+                    if (veg.getState() == State.ALIVE) {
+                        this.alivePlants.add(veg);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Method to set a plant on fire
      *
@@ -115,6 +136,7 @@ public class Simulation {
             Vegetation plant = (Vegetation) grid[i][j];
             plant.setState(BURNING);
             burningPlants.add(plant);
+            alivePlants.remove(plant);
             return;
         }
 
@@ -192,6 +214,7 @@ public class Simulation {
         for (Vegetation plant : plantsToIgnite) {
             plant.setState(State.BURNING);
             burningPlants.add(plant);
+            alivePlants.remove(plant);
         }
         this.turn += 1;
     }

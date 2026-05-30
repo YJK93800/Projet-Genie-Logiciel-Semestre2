@@ -76,7 +76,8 @@ public class UIController {
 
             onSimulationCreated.accept(newSimulation);
             forestDisplay.setForest(forest);
-            root.setCenter(forestDisplay.createContent());
+            StackPane centerStack = (StackPane) root.getCenter();
+            centerStack.getChildren().set(0, forestDisplay.createContent());
 
             Rectangle[][] rects = forestDisplay.getRects();
 

@@ -64,12 +64,12 @@
 }
 
 .custom-choice-box .context-menu {
-    -fx-background-color: #23232e;
+    -fx-background-color: #2c3e50;
     -fx-border-color: #3d3d4e;
 }
 
 .custom-choice-box .menu-item:hover {
-    -fx-background-color: #34495e;
+    -fx-background-color: #2c3e50;
 }
 
 .custom-choice-box .menu-item .label {
@@ -86,4 +86,47 @@
 .forest-button:hover {
     -fx-border-color: #1abc9c;
     -fx-text-fill: #1abc9c;
+}
+
+.stats-panel {
+    -fx-background-color: #2c3e50;
+    -fx-border-color: #3d3d4e;
+    -fx-border-width: 0 0 1 0;
+}
+
+.stats-label {
+    -fx-text-fill: #ecf0f1;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 12 6 12;
+    -fx-background-color: #2c3e50;
+    -fx-background-radius: 4;
+}
+
+.legend-button {
+    -fx-background-color: #2c3e50;
+    -fx-text-fill: #ecf0f1;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+    -fx-padding: 8 16 8 16;
+}
+
+.legend-button:hover {
+    -fx-background-color: #1abc9c;
+}
+
+.legend-box {
+    -fx-background-color: #2c3e50;
+    -fx-border-color: #3d3d4e;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 12;
+}
+
+.legend-box .label {
+    -fx-text-fill: #1abc9c;
+    -fx-font-size: 12px;
 }
