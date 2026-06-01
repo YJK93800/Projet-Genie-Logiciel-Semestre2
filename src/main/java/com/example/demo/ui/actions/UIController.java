@@ -29,11 +29,13 @@ public class UIController {
     private BorderPane root;
     private ForestDisplay forestDisplay;
     private Consumer<Simulation> onSimulationCreated;
+    private Runnable refreshStats;
 
-    public UIController(BorderPane root, ForestDisplay forestDisplay, Consumer<Simulation> onSimulationCreated) {
+    public UIController(BorderPane root, ForestDisplay forestDisplay, Consumer<Simulation> onSimulationCreated, Runnable refreshStats) {
         this.root = root;
         this.forestDisplay = forestDisplay;
         this.onSimulationCreated = onSimulationCreated;
+        this.refreshStats = refreshStats;
     }
 
     /**
@@ -93,11 +95,13 @@ public class UIController {
 
                     tile.setOnMouseDragEntered(e -> {
                         FillCell tool = Editor.getCurrentTool();
+                        ForestCell oldCell = forestGrid[row][col];
 
                         if (tool instanceof IgniteTool) {
                             try {
                                 newSimulation.ignitePlant(row, col);
                                 rect.setFill(forestGrid[row][col].displayColor());
+                                refreshStats.run();
                             } catch (Exception ex) {
                                 System.out.println(ex.getMessage());
                             }
@@ -108,16 +112,21 @@ public class UIController {
                         if (newCell != null) {
                             forestGrid[row][col] = newCell;
                             rect.setFill(newCell.displayColor());
+
+                            newSimulation.handleCellReplaced(oldCell, newCell);
+                            refreshStats.run();
                         }
                     });
 
                     tile.setOnMouseClicked(e -> {
                         FillCell tool = Editor.getCurrentTool();
+                        ForestCell oldCell = forestGrid[row][col];
 
                         if (tool instanceof IgniteTool) {
                             try {
                                 newSimulation.ignitePlant(row, col);
                                 rect.setFill(forestGrid[row][col].displayColor());
+                                refreshStats.run();
                             } catch (Exception ex) {
                                 System.out.println(ex.getMessage());
                             }
@@ -128,6 +137,9 @@ public class UIController {
                         if (newCell != null) {
                             forestGrid[row][col] = newCell;
                             rect.setFill(newCell.displayColor());
+
+                            newSimulation.handleCellReplaced(oldCell, newCell);
+                            refreshStats.run();
                         }
                     });
                 }

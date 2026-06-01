@@ -296,4 +296,26 @@ public class Simulation {
         return base * target.getFlammability() * this.weatherModifier;
     }
 
+    /**
+     * Updates tracking lists when a cell is replaced via the editor.
+     * * @param oldCell The cell being replaced.
+     * @param newCell The new cell being placed.
+     */
+    public void handleCellReplaced(ForestCell oldCell, ForestCell newCell) {
+        if (oldCell instanceof Vegetation) {
+            Vegetation oldVeg = (Vegetation) oldCell;
+            alivePlants.remove(oldVeg);
+            burningPlants.remove(oldVeg);
+        }
+
+        if (newCell instanceof Vegetation) {
+            Vegetation newVeg = (Vegetation) newCell;
+            if (newVeg.getState() == State.ALIVE) {
+                alivePlants.add(newVeg);
+            } else if (newVeg.getState() == State.BURNING) {
+                burningPlants.add(newVeg);
+            }
+        }
+    }
+
 }

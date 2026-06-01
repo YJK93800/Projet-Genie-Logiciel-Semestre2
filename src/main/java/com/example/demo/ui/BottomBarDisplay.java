@@ -19,6 +19,10 @@ public class BottomBarDisplay {
         this.refreshUI = refreshUI;
     }
 
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
+
     public Parent createContent() {
 
         HBox bottomBar = new HBox();
