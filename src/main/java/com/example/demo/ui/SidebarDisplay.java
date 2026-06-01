@@ -10,7 +10,9 @@ import com.example.demo.ui.editor.tools.IgniteTool;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class SidebarDisplay {
@@ -48,6 +50,9 @@ public class SidebarDisplay {
 
     private void buildSidebarChildren() {
 
+        Label title = new Label("Forest Simulator");
+        title.getStyleClass().add("sidebar-title");
+
         Button newForest = new Button("+  New");
         newForest.getStyleClass().add("nav-button");
         newForest.setOnAction(e -> controller.newForestAction());
@@ -79,15 +84,27 @@ public class SidebarDisplay {
         test.setOnAction(e -> System.out.println(this.simulation.getForest()));
 
         sidebar.getChildren().addAll(
+                title,
+                separator(),
                 newForest,
                 btnSettings,
+                separator(),
                 weatherComponent.createMenu(),
                 plantComponent.createMenu(),
                 environmentComponent.createMenu(),
+                separator(),
                 btnCellState,
                 nextTurn,
                 test
         );
+    }
+
+    // Creates a thin separator line between button groups
+    private Pane separator() {
+        Pane line = new Pane();
+        line.getStyleClass().add("sidebar-separator");
+        line.setMaxWidth(Double.MAX_VALUE);
+        return line;
     }
 
     // Setter method
