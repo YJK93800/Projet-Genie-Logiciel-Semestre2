@@ -39,9 +39,11 @@ public class MainInterface extends Application {
 
 
         final SidebarDisplay[] sidebarHolder = new SidebarDisplay[1];
+        final BottomBarDisplay[] bottomBarHolder = new BottomBarDisplay[1];
 
         StatsDisplay statsDisplay = new StatsDisplay(simulation);
         LegendDisplay legendDisplay = new LegendDisplay();
+
 
 
         UIController controller = new UIController(root, view, sim -> {
@@ -49,7 +51,13 @@ public class MainInterface extends Application {
             sidebarHolder[0].refresh();
             statsDisplay.setSimulation(sim);
             statsDisplay.refresh();
-        });
+
+            if (bottomBarHolder[0] != null) {
+                bottomBarHolder[0].setSimulation(sim);
+            }
+        }, statsDisplay::refresh);
+
+
 
         SidebarDisplay sidebar = new SidebarDisplay(
                 simulation,
@@ -69,6 +77,7 @@ public class MainInterface extends Application {
             statsDisplay.refresh();
 
         });
+        bottomBarHolder[0] = bottomBar;
 
         StackPane centerStack = new StackPane();
         centerStack.getChildren().add(view.createContent());
