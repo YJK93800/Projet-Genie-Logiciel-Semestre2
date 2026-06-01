@@ -5,6 +5,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -30,14 +32,24 @@ public class BottomBarDisplay {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
+        Label turnLabel = new Label("Turns :");
+        turnLabel.getStyleClass().add("sub-menu-label");
+
+        TextField turnField = new TextField("1");
+        turnField.getStyleClass().add("custom-text-field");
+        turnField.setPrefWidth(50);
+
         Button nextTurn = new Button("=> Next Turn");
         nextTurn.getStyleClass().add("nav-button");
         nextTurn.setOnAction(e -> {
-            this.simulation.spreadFireOneTurn();
+            int n = Integer.parseInt(turnField.getText());
+            for (int i = 0; i < n; i++) {
+                this.simulation.spreadFireOneTurn();
+            }
             this.refreshUI.run();
         });
 
-        bottomBar.getChildren().addAll(spacer, nextTurn);
+        bottomBar.getChildren().addAll(spacer, turnLabel, turnField, nextTurn);
 
         return bottomBar;
     }
