@@ -39,6 +39,7 @@ public class MainInterface extends Application {
 
 
         final SidebarDisplay[] sidebarHolder = new SidebarDisplay[1];
+        final BottomBarDisplay[] bottomBarHolder = new BottomBarDisplay[1];
 
         StatsDisplay statsDisplay = new StatsDisplay(simulation);
         LegendDisplay legendDisplay = new LegendDisplay();
@@ -49,6 +50,7 @@ public class MainInterface extends Application {
             sidebarHolder[0].refresh();
             statsDisplay.setSimulation(sim);
             statsDisplay.refresh();
+            bottomBarHolder[0].setSimulation(sim);
         });
 
         SidebarDisplay sidebar = new SidebarDisplay(
@@ -69,6 +71,8 @@ public class MainInterface extends Application {
             statsDisplay.refresh();
 
         });
+
+        bottomBarHolder[0] = bottomBar;
 
         StackPane centerStack = new StackPane();
         centerStack.getChildren().add(view.createContent());
