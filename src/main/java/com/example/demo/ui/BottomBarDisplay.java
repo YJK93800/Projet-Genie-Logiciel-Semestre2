@@ -53,4 +53,17 @@ public class BottomBarDisplay {
 
         return bottomBar;
     }
+
+    //setter method
+
+    /**
+     * Setter method of the simulation attribute
+     *
+     * @param simulation the new ongoing simulation
+     */
+
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
+
 }
