@@ -75,6 +75,7 @@ public class MainInterface extends Application {
         bottomBarHolder[0] = bottomBar;
 
         StackPane centerStack = new StackPane();
+        centerStack.getStyleClass().add("center-area");
         centerStack.getChildren().add(view.createContent());
         centerStack.getChildren().add(legendDisplay.createContent());
 
