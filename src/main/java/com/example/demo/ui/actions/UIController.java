@@ -18,6 +18,10 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.function.Consumer;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.net.URL;
+
 /**
  * Class in charge of the UI actions
  *
@@ -135,5 +139,25 @@ public class UIController {
         });
 
         dialog.open();
+    }
+
+    /**
+     * Method to open the tutorial video
+     */
+    public void openTutorial() {
+
+        try {
+            URL videoUrl = getClass().getResource("/videos/tutorial.mp4");
+
+            if (videoUrl == null) {
+                System.out.println("Tutorial video not found.");
+                return;
+            }
+
+            Desktop.getDesktop().open(new File(videoUrl.toURI()));
+
+        } catch (Exception e) {
+            System.err.println("Unable to open tutorial video.");
+        }
     }
 }

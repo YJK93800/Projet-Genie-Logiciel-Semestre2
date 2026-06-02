@@ -15,6 +15,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.scene.layout.StackPane;
+
 public class SidebarDisplay {
 
     private Simulation simulation;
@@ -83,6 +90,10 @@ public class SidebarDisplay {
         test.getStyleClass().add("nav-button");
         test.setOnAction(e -> System.out.println(this.simulation.getForest()));
 
+        Button tutorial = new Button("Tutorial");
+        tutorial.getStyleClass().add("nav-button");
+        tutorial.setOnAction(e -> controller.openTutorial());
+
         sidebar.getChildren().addAll(
                 title,
                 separator(),
@@ -95,7 +106,8 @@ public class SidebarDisplay {
                 separator(),
                 btnCellState,
                 nextTurn,
-                test
+                test,
+                tutorial
         );
     }
 
@@ -106,6 +118,7 @@ public class SidebarDisplay {
         line.setMaxWidth(Double.MAX_VALUE);
         return line;
     }
+
 
     // Setter method
 
