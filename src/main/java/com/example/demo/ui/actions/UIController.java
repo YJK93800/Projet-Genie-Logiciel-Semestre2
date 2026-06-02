@@ -12,22 +12,19 @@ import com.example.demo.ui.Menu.NewForestPopUp;
 import com.example.demo.ui.editor.Editor;
 import com.example.demo.ui.editor.tools.FillCell;
 import com.example.demo.ui.editor.tools.IgniteTool;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
+import java.awt.*;
+import java.net.URI;
 import java.util.function.Consumer;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.net.URL;
-
-/**
- * Class in charge of the UI actions
- *
- * @author Yann Kong IN1 GI1
- * @version 21.0.8
- */
 public class UIController {
 
     private BorderPane root;
@@ -42,7 +39,6 @@ public class UIController {
 
     /**
      * Method to Create a new forest grid.
-     * Uses the width and height input from the NewForestPopUp.
      */
     public void newForestAction() {
 
@@ -64,7 +60,6 @@ public class UIController {
             ForestCell[][] forestGrid = new ForestCell[h][w];
             forest.setForestGrid(forestGrid);
 
-            // Fill default grid
             for (int i = 0; i < h; i++) {
                 for (int j = 0; j < w; j++) {
                     forestGrid[i][j] = new Grass(
@@ -80,6 +75,7 @@ public class UIController {
 
             onSimulationCreated.accept(newSimulation);
             forestDisplay.setForest(forest);
+
             StackPane centerStack = (StackPane) root.getCenter();
             centerStack.getChildren().set(0, forestDisplay.createContent());
 
@@ -90,50 +86,14 @@ public class UIController {
 
                     int row = i;
                     int col = j;
+
                     Rectangle rect = rects[i][j];
                     StackPane tile = (StackPane) rect.getParent();
 
                     tile.setOnDragDetected(e -> tile.startFullDrag());
 
-                    tile.setOnMouseDragEntered(e -> {
-                        FillCell tool = Editor.getCurrentTool();
-
-                        if (tool instanceof IgniteTool) {
-                            try {
-                                newSimulation.ignitePlant(row, col);
-                                rect.setFill(forestGrid[row][col].displayColor());
-                            } catch (Exception ex) {
-                                System.out.println(ex.getMessage());
-                            }
-                            return;
-                        }
-
-                        ForestCell newCell = tool.callCell(row, col);
-                        if (newCell != null) {
-                            forestGrid[row][col] = newCell;
-                            rect.setFill(newCell.displayColor());
-                        }
-                    });
-
-                    tile.setOnMouseClicked(e -> {
-                        FillCell tool = Editor.getCurrentTool();
-
-                        if (tool instanceof IgniteTool) {
-                            try {
-                                newSimulation.ignitePlant(row, col);
-                                rect.setFill(forestGrid[row][col].displayColor());
-                            } catch (Exception ex) {
-                                System.out.println(ex.getMessage());
-                            }
-                            return;
-                        }
-
-                        ForestCell newCell = tool.callCell(row, col);
-                        if (newCell != null) {
-                            forestGrid[row][col] = newCell;
-                            rect.setFill(newCell.displayColor());
-                        }
-                    });
+                    tile.setOnMouseDragEntered(e -> handleTool(newSimulation, forestGrid, rect, row, col));
+                    tile.setOnMouseClicked(e -> handleTool(newSimulation, forestGrid, rect, row, col));
                 }
             }
         });
@@ -141,23 +101,25 @@ public class UIController {
         dialog.open();
     }
 
-    /**
-     * Method to open the tutorial video
-     */
-    public void openTutorial() {
+    private void handleTool(Simulation sim, ForestCell[][] grid, Rectangle rect, int row, int col) {
 
-        try {
-            URL videoUrl = getClass().getResource("/videos/tutorial.mp4");
+        FillCell tool = Editor.getCurrentTool();
 
-            if (videoUrl == null) {
-                System.out.println("Tutorial video not found.");
-                return;
+        if (tool instanceof IgniteTool igniteTool) {
+            try {
+                sim.ignitePlant(row, col);
+                rect.setFill(grid[row][col].displayColor());
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
             }
+            return;
+        }
 
-            Desktop.getDesktop().open(new File(videoUrl.toURI()));
-
-        } catch (Exception e) {
-            System.err.println("Unable to open tutorial video.");
+        ForestCell newCell = tool.callCell(row, col);
+        if (newCell != null) {
+            grid[row][col] = newCell;
+            rect.setFill(newCell.displayColor());
         }
     }
+
 }

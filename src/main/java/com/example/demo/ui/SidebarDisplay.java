@@ -84,10 +84,6 @@ public class SidebarDisplay {
         test.getStyleClass().add("nav-button");
         test.setOnAction(e -> System.out.println(this.simulation.getForest()));
 
-        Button tutorial = new Button("Tutorial");
-        tutorial.getStyleClass().add("nav-button");
-        tutorial.setOnAction(e -> controller.openTutorial());
-
         sidebar.getChildren().addAll(
                 title,
                 separator(),
@@ -100,8 +96,7 @@ public class SidebarDisplay {
                 separator(),
                 btnCellState,
                 nextTurn,
-                test,
-                tutorial
+                test
         );
     }
 
