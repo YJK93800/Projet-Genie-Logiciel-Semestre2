@@ -1,12 +1,9 @@
 package com.example.demo.ui;
 
 import com.example.demo.simulation.Simulation;
-import com.example.demo.ui.Menu.EnvironmentMenuDisplay;
-import com.example.demo.ui.Menu.PlantMenuDisplay;
+import com.example.demo.ui.Menu.ToolsMenuDisplay;
 import com.example.demo.ui.Menu.WeatherMenuDisplay;
 import com.example.demo.ui.actions.UIController;
-import com.example.demo.ui.editor.Editor;
-import com.example.demo.ui.editor.tools.IgniteTool;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -14,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-
 
 public class SidebarDisplay {
 
@@ -63,15 +59,7 @@ public class SidebarDisplay {
         btnSettings.setOnAction(e -> System.out.println("Open Settings"));
 
         WeatherMenuDisplay weatherComponent = new WeatherMenuDisplay(this.simulation.getForest().getWeather());
-        PlantMenuDisplay plantComponent = new PlantMenuDisplay();
-        EnvironmentMenuDisplay environmentComponent = new EnvironmentMenuDisplay();
-
-        Button btnCellState = new Button("🔥  Ignite Plant");
-        btnCellState.getStyleClass().add("nav-button");
-        btnCellState.setOnAction(e -> {
-            Editor.setCurrentTool(new IgniteTool());
-            System.out.println("Ignite selected");
-        });
+        ToolsMenuDisplay toolsComponent = new ToolsMenuDisplay();
 
         Button nextTurn = new Button("=> Next Turn");
         nextTurn.getStyleClass().add("nav-button");
@@ -91,10 +79,8 @@ public class SidebarDisplay {
                 btnSettings,
                 separator(),
                 weatherComponent.createMenu(),
-                plantComponent.createMenu(),
-                environmentComponent.createMenu(),
+                toolsComponent.createMenu(),
                 separator(),
-                btnCellState,
                 nextTurn,
                 test
         );
@@ -107,7 +93,6 @@ public class SidebarDisplay {
         line.setMaxWidth(Double.MAX_VALUE);
         return line;
     }
-
 
     // Setter method
 
