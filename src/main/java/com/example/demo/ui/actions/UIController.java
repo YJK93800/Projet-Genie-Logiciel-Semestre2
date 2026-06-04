@@ -12,17 +12,15 @@ import com.example.demo.ui.Menu.NewForestPopUp;
 import com.example.demo.ui.editor.Editor;
 import com.example.demo.ui.editor.tools.FillCell;
 import com.example.demo.ui.editor.tools.IgniteTool;
-import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
-import java.awt.*;
-import java.net.URI;
+import java.awt.Desktop;
+import java.io.File;
+import java.net.URL;
+import java.util.concurrent.CompletableFuture;
+
 import java.util.function.Consumer;
 
 public class UIController {
@@ -121,5 +119,35 @@ public class UIController {
             rect.setFill(newCell.displayColor());
         }
     }
+
+    /**
+     * Method to open the tutorial video
+     */
+    public void openTutorial() {
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                URL videoUrl = getClass().getResource("/videos/video.mp4");
+
+                if (videoUrl == null) {
+                    System.out.println("Tutorial video not found.");
+                    return;
+                }
+
+                File video = new File(videoUrl.toURI());
+
+                if (!Desktop.isDesktopSupported()) {
+                    System.out.println("Desktop not supported");
+                    return;
+                }
+
+                Desktop.getDesktop().open(video);
+
+            } catch (Exception e) {
+                System.err.println("Unable to open tutorial video.");
+            }
+        });
+    }
+
 
 }
