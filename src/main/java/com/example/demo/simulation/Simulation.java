@@ -90,20 +90,20 @@ public class Simulation {
      *
      * @return double value
      */
-    private double initializeWeatherModifier(){
-        Weather weather = this.forest.getWeather();
+    private double initializeWeatherModifier() {
+        Weather w = this.forest.getWeather();
 
-        double windFactor = Math.min(weather.getWind().getWindSpeed() / 120.0, 1.0);
+        double temp = w.getTemperature() / 40.0;
+        double sun = w.getSunlightIntensity() / 100.0;
+        double humidity = w.getHumidity() / 100.0;
 
-        double weatherModifier = 1.0;
-        weatherModifier += windFactor * 0.8;
-        weatherModifier += weather.getTemperature() / 100.0;
-        weatherModifier += weather.getSunlightIntensity() / 100.0;
-        weatherModifier -= weather.getHumidity() / 100.0;
-        weatherModifier = Math.max(0.1, Math.min(weatherModifier, 3.0));
+        double modifier = 1.0 + temp * 1.0 + sun * 0.8;
+        modifier *= (1.0 - 0.4 * humidity);
 
-        return weatherModifier;
+        return Math.max(0.3, Math.min(modifier, 3.0));
     }
+
+
 
     private void initializeAlivePlants() {
         this.alivePlants.clear();
@@ -261,39 +261,41 @@ public class Simulation {
      * @param j length-coordinate of the targeted plant
      * @return the probability to ignite the targeted plant on fire
      */
-    private double spreadingProbability(Vegetation source, Vegetation target, int i, int j){
-        Wind wind = this.forest.getWeather().getWind();
-        int xPos = source.getXPos();
-        int yPos = source.getYPos();
+    private double spreadingProbability(Vegetation source, Vegetation target, int i, int j) {
+        Weather weather = this.forest.getWeather();
+        Wind wind = weather.getWind();
 
-        int dx = i - xPos;
-        int dy = j - yPos;
+        int dxCell = i - source.getXPos();
+        int dyCell = j - source.getYPos();
 
-        CardinalDirections spreadDirection = CardinalDirections.getDirection(dx, dy);
+        double dist = Math.sqrt(dxCell * dxCell + dyCell * dyCell);
+        if (dist == 0) return 0.0;
 
-        // Probabilites
+        double dx = dxCell / dist;
+        double dy = dyCell / dist;
 
-        double low = 0.05;
-        double medium = 0.25;
-        double high = 3;
+        double base = 0.45;
+        double flammability = (source.getFlammability() + target.getFlammability()) / 2.0;
 
-        if (wind.getWindDirection() == NEUTRAL) return medium * target.getFlammability() * this.weatherModifier;
-        int dot = spreadDirection.getXPos() * wind.getWindDirection().getXPos()
-                + spreadDirection.getYPos() * wind.getWindDirection().getYPos();
+        double probability = base * flammability * this.weatherModifier;
 
-        double base;
+        if (wind.getWindDirection() != NEUTRAL) {
+            double wx = wind.getWindDirection().getXPos();
+            double wy = wind.getWindDirection().getYPos();
 
-        if (dot > 0){
-            base = high;
+            double norm = Math.sqrt(wx * wx + wy * wy);
+            if (norm != 0) { wx /= norm; wy /= norm; }
+
+            double dot = dx * wx + dy * wy;
+            double windStrength = Math.min(wind.getWindSpeed() / 120.0, 1.0);
+
+            double windFactor = 1.0 + dot * windStrength * 1.2;
+            probability *= windFactor;
         }
-        else if (dot < 0){
-            base = low;
-        }
-        else{
-            base = medium;
-        }
 
-        return base * target.getFlammability() * this.weatherModifier;
+        return Math.max(0.0, Math.min(probability, 1.0));
     }
+
+
 
 }
