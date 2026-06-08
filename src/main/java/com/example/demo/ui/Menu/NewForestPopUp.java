@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.geometry.Pos;
+
 
 
 /**
@@ -32,11 +34,23 @@ public class NewForestPopUp {
 
         Stage popup = new Stage();
         popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("New Forest");
+
+        Label widthLabel = new Label("Width");
+        widthLabel.getStyleClass().add("popup-label");
+
+        Label heightLabel = new Label("Height");
+        heightLabel.getStyleClass().add("popup-label");
 
         TextField widthField = new TextField();
+        widthField.getStyleClass().add("custom-text-field");
+
         TextField heightField = new TextField();
+        heightField.getStyleClass().add("custom-text-field");
 
         Button createBtn = new Button("Create");
+        createBtn.getStyleClass().add("forest-button");
+        createBtn.setMaxWidth(Double.MAX_VALUE);
 
         createBtn.setOnAction(e -> {
 
@@ -58,7 +72,14 @@ public class NewForestPopUp {
                 createBtn
         );
 
-        popup.setScene(new Scene(layout, 250, 200));
+        layout.getStyleClass().add("popup-container");
+        layout.setAlignment(Pos.CENTER_LEFT);
+
+        Scene scene = new Scene(layout, 260, 230);
+        String css = getClass().getResource("/style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+
+        popup.setScene(scene);
         popup.showAndWait();
     }
 
