@@ -38,6 +38,15 @@ public class Grass extends Vegetation {
 
     //Methods
 
+    /**
+     * Setter method for the grass type attribute.
+     *
+     * @param type the new GrassType enum value
+     */
+    public void setType(GrassType type) {
+        this.type = type;
+    }
+
     public double initializeFlammability(){
         return 0.8;
     }

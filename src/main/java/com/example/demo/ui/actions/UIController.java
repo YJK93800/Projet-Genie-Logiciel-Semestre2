@@ -33,6 +33,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
@@ -258,7 +259,6 @@ public class UIController {
         }
 
         VBox panel = new VBox(12);
-        // On utilise la classe existante de la sidebar pour le fond
         panel.getStyleClass().add("sidebar");
         panel.setPadding(new Insets(15));
         panel.setPrefWidth(230);
@@ -271,8 +271,85 @@ public class UIController {
         sep1.getStyleClass().add("sidebar-separator");
         panel.getChildren().add(sep1);
 
+        Class<?> commonClass = null;
+        List<ForestCell> selectedCellObjects = new ArrayList<>();
+        for (String key : selectedCells) {
+            String[] parts = key.split(",");
+            ForestCell cell = grid[Integer.parseInt(parts[0])][Integer.parseInt(parts[1])];
+            selectedCellObjects.add(cell);
+            if (commonClass == null) commonClass = cell.getClass();
+            else if (commonClass != cell.getClass()) {
+                commonClass = (cell instanceof Vegetation && Vegetation.class.isAssignableFrom(commonClass)) ? Vegetation.class : ForestCell.class;
+            }
+        }
+
+        boolean allTrees = selectedCellObjects.stream().allMatch(c -> c instanceof Tree);
+        boolean allGrass = selectedCellObjects.stream().allMatch(c -> c instanceof Grass);
+
+        String currentHeightStr = "Mixed";
+        if (!selectedCellObjects.isEmpty()) {
+            int firstHeight = selectedCellObjects.get(0).getHeight();
+            if (selectedCellObjects.stream().allMatch(c -> c.getHeight() == firstHeight)) {
+                currentHeightStr = String.valueOf(firstHeight);
+            }
+        }
+
+        String currentStateStr = "Mixed";
+        if (Vegetation.class.isAssignableFrom(commonClass) && !selectedCellObjects.isEmpty()) {
+            State firstState = ((Vegetation) selectedCellObjects.get(0)).getState();
+            if (selectedCellObjects.stream().allMatch(c -> ((Vegetation) c).getState() == firstState)) {
+                currentStateStr = firstState.toString();
+            }
+        }
+
+        String currentSpeciesStr = "Mixed";
+        if (allTrees && !selectedCellObjects.isEmpty()) {
+            TreeSpecies firstSpecie = ((Tree) selectedCellObjects.get(0)).getSpecie();
+            if (selectedCellObjects.stream().allMatch(c -> ((Tree) c).getSpecie() == firstSpecie)) {
+                currentSpeciesStr = firstSpecie.toString();
+            }
+        }
+
+        String currentGrassTypeStr = "Mixed";
+        if (allGrass && !selectedCellObjects.isEmpty()) {
+            GrassType firstType = ((Grass) selectedCellObjects.get(0)).getType();
+            if (selectedCellObjects.stream().allMatch(c -> ((Grass) c).getType() == firstType)) {
+                currentGrassTypeStr = firstType.toString();
+            }
+        }
+
+        VBox infoBox = new VBox(6);
+        Label infoTitle = new Label("Current Attributes:");
+        infoTitle.getStyleClass().add("properties-label");
+        infoBox.getChildren().add(infoTitle);
+        Label hLabel = new Label("• Height: " + currentHeightStr);
+        hLabel.getStyleClass().add("properties-info");
+        infoBox.getChildren().add(hLabel);
+
+        if (Vegetation.class.isAssignableFrom(commonClass)) {
+            Label sLabel = new Label("• State: " + currentStateStr);
+            sLabel.getStyleClass().add("properties-info");
+            infoBox.getChildren().add(sLabel);
+        }
+        if (allTrees) {
+            Label spLabel = new Label("• Species: " + currentSpeciesStr);
+            spLabel.getStyleClass().add("properties-info");
+            infoBox.getChildren().add(spLabel);
+        }
+        if (allGrass) {
+            Label gLabel = new Label("• Grass Type: " + currentGrassTypeStr);
+            gLabel.getStyleClass().add("properties-info");
+            infoBox.getChildren().add(gLabel);
+        }
+        panel.getChildren().add(infoBox);
+
+        Pane sepInfo = new Pane();
+        sepInfo.getStyleClass().add("sidebar-separator");
+        panel.getChildren().add(sepInfo);
+
+
+
         Label transformLabel = new Label("Convert Cell Type:");
-        // Remplacement de la couleur en dur par une classe CSS
         transformLabel.getStyleClass().add("properties-label");
 
         ChoiceBox<String> typeBox = new ChoiceBox<>();
@@ -308,17 +385,35 @@ public class UIController {
         });
         panel.getChildren().addAll(transformLabel, typeBox, convertBtn);
 
-        Class<?> commonClass = null;
-        List<ForestCell> selectedCellObjects = new ArrayList<>();
-        for (String key : selectedCells) {
-            String[] parts = key.split(",");
-            ForestCell cell = grid[Integer.parseInt(parts[0])][Integer.parseInt(parts[1])];
-            selectedCellObjects.add(cell);
-            if (commonClass == null) commonClass = cell.getClass();
-            else if (commonClass != cell.getClass()) {
-                commonClass = (cell instanceof Vegetation && Vegetation.class.isAssignableFrom(commonClass)) ? Vegetation.class : ForestCell.class;
-            }
+        Pane sepHeight = new Pane();
+        sepHeight.getStyleClass().add("sidebar-separator");
+        panel.getChildren().add(sepHeight);
+
+        Label heightLabel = new Label("Modify Height:");
+        heightLabel.getStyleClass().add("properties-label");
+
+        javafx.scene.control.TextField heightField = new javafx.scene.control.TextField();
+        heightField.getStyleClass().add("custom-text-field");
+        if (!currentHeightStr.equals("Mixed")) {
+            heightField.setText(currentHeightStr);
         }
+
+        Button heightBtn = new Button("Apply Height");
+        heightBtn.getStyleClass().add("forest-button");
+        heightBtn.setOnAction(e -> {
+            try {
+                int newHeight = Integer.parseInt(heightField.getText());
+                for (ForestCell cell : selectedCellObjects) {
+                    cell.setHeight(newHeight);
+                }
+                updatePropertiesPanel(grid, sim);
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid height format.");
+            }
+        });
+        panel.getChildren().addAll(heightLabel, heightField, heightBtn);
+
+
 
         if (Vegetation.class.isAssignableFrom(commonClass)) {
             Pane sep2 = new Pane();
@@ -326,12 +421,15 @@ public class UIController {
             panel.getChildren().addAll(sep2);
 
             Label stateLabel = new Label("Modify Plant State:");
-            // Remplacement de la couleur en dur par une classe CSS
             stateLabel.getStyleClass().add("properties-label");
 
             ChoiceBox<State> stateBox = new ChoiceBox<>();
             stateBox.getItems().addAll(State.values());
             stateBox.getStyleClass().add("custom-choice-box");
+
+            if (!currentStateStr.equals("Mixed")) {
+                stateBox.setValue(State.valueOf(currentStateStr));
+            }
 
             State firstState = ((Vegetation) selectedCellObjects.get(0)).getState();
             if (selectedCellObjects.stream().allMatch(c -> ((Vegetation) c).getState() == firstState)) {
@@ -366,13 +464,92 @@ public class UIController {
             panel.getChildren().addAll(stateLabel, stateBox, stateBtn);
         }
 
+        if (allTrees) {
+            Pane sepTree = new Pane();
+            sepTree.getStyleClass().add("sidebar-separator");
+            panel.getChildren().add(sepTree);
+
+            Label treeTypeLabel = new Label("Modify Tree Species:");
+            treeTypeLabel.getStyleClass().add("properties-label");
+
+            ChoiceBox<TreeSpecies> treeTypeBox = new ChoiceBox<>();
+            treeTypeBox.getItems().addAll(TreeSpecies.values());
+            treeTypeBox.getStyleClass().add("custom-choice-box");
+            if (!currentSpeciesStr.equals("Mixed")) {
+                treeTypeBox.setValue(TreeSpecies.valueOf(currentSpeciesStr));
+            }
+
+            Button treeTypeBtn = new Button("Apply Species");
+            treeTypeBtn.getStyleClass().add("forest-button");
+            treeTypeBtn.setOnAction(e -> {
+                TreeSpecies selectedSpecie = treeTypeBox.getValue();
+                if (selectedSpecie != null) {
+                    for (ForestCell cell : selectedCellObjects) {
+                        if (cell instanceof Tree tree) {
+                            tree.setSpecie(selectedSpecie);
+                        }
+                    }
+                    for (String key : selectedCells) {
+                        String[] parts = key.split(",");
+                        int r = Integer.parseInt(parts[0]);
+                        int c = Integer.parseInt(parts[1]);
+                        forestDisplay.getRects()[r][c].setFill(grid[r][c].displayColor());
+                    }
+                    updatePropertiesPanel(grid, sim);
+                }
+            });
+            panel.getChildren().addAll(treeTypeLabel, treeTypeBox, treeTypeBtn);
+        }
+
+        if (allGrass) {
+            Pane sepGrass = new Pane();
+            sepGrass.getStyleClass().add("sidebar-separator");
+            panel.getChildren().add(sepGrass);
+
+            Label grassTypeLabel = new Label("Modify Grass Type:");
+            grassTypeLabel.getStyleClass().add("properties-label");
+
+            ChoiceBox<GrassType> grassTypeBox = new ChoiceBox<>();
+            grassTypeBox.getItems().addAll(GrassType.values());
+            grassTypeBox.getStyleClass().add("custom-choice-box");
+            if (!currentGrassTypeStr.equals("Mixed")) {
+                grassTypeBox.setValue(GrassType.valueOf(currentGrassTypeStr));
+            }
+
+            Button grassTypeBtn = new Button("Apply Grass Type");
+            grassTypeBtn.getStyleClass().add("forest-button");
+            grassTypeBtn.setOnAction(e -> {
+                GrassType selectedGrassType = grassTypeBox.getValue();
+                if (selectedGrassType != null) {
+                    for (ForestCell cell : selectedCellObjects) {
+                        if (cell instanceof Grass grass) {
+                            grass.setType(selectedGrassType);
+                        }
+                    }
+                    for (String key : selectedCells) {
+                        String[] parts = key.split(",");
+                        int r = Integer.parseInt(parts[0]);
+                        int c = Integer.parseInt(parts[1]);
+                        forestDisplay.getRects()[r][c].setFill(grid[r][c].displayColor());
+                    }
+                    updatePropertiesPanel(grid, sim);
+                }
+            });
+            panel.getChildren().addAll(grassTypeLabel, grassTypeBox, grassTypeBtn);
+        }
+
+
         Pane spacer = new Pane(); spacer.setPrefHeight(15);
         Button clearBtn = new Button("Clear Selection");
         clearBtn.getStyleClass().add("forest-button");
         clearBtn.setOnAction(e -> clearSelection());
         panel.getChildren().addAll(spacer, clearBtn);
 
-        root.setRight(panel);
+        ScrollPane scrollPanel = new ScrollPane(panel);
+        scrollPanel.setFitToWidth(true);
+        scrollPanel.getStyleClass().add("sidebar-scroll");
+
+        root.setRight(scrollPanel);
     }
 
 

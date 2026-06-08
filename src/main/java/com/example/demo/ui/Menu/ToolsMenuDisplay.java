@@ -26,14 +26,14 @@ public class ToolsMenuDisplay extends AbstractMenuDisplay {
             System.out.println("Selection Tool selected");
         });
 
-        Button rectSelectBtn = new Button("🔲  Rectangle Select");
+        Button rectSelectBtn = new Button(" Rectangle Select");
         rectSelectBtn.getStyleClass().add("nav-button");
         rectSelectBtn.setOnAction(e -> {
             Editor.setCurrentTool(new RectangleSelectionTool());
             System.out.println("Rectangle Selection Tool selected");
         });
 
-        Button ignite = new Button("🔥  Ignite Plant");
+        Button ignite = new Button(" Ignite Plant");
         ignite.getStyleClass().add("nav-button");
         ignite.setOnAction(e -> {
             Editor.setCurrentTool(new IgniteTool());

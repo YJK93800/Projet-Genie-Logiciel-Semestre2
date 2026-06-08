@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -29,7 +30,15 @@ public class ForestDisplay {
         grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         buildGrid();
-        return grid;
+
+        StackPane gridWrapper = new StackPane(grid);
+
+        ScrollPane scrollPane = new ScrollPane(gridWrapper);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.getStyleClass().add("forest-scroll");
+
+        return scrollPane;
     }
 
 

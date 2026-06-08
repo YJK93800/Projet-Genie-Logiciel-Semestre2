@@ -40,6 +40,17 @@ public class Tree extends Vegetation {
     // Methods
 
     /**
+     * Setter method for the specie attribute.
+     * Updates the species and automatically recalculates flammability.
+     *
+     * @param specie the new TreeSpecies enum value
+     */
+    public void setSpecie(TreeSpecies specie) {
+        this.specie = specie;
+        this.flammability = initializeFlammability();
+    }
+
+    /**
      * Private method to convert a character in a file to the corresponding tree specie
      *
      * @param c char value, the approximated tree specie in the file
