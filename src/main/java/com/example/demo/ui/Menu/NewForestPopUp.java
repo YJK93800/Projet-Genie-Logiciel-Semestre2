@@ -65,9 +65,9 @@ public class NewForestPopUp {
         });
 
         VBox layout = new VBox(10,
-                new Label("Width"),
+                widthLabel,
                 widthField,
-                new Label("Height"),
+                heightLabel,
                 heightField,
                 createBtn
         );

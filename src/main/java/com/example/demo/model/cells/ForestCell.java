@@ -70,6 +70,15 @@ public abstract class ForestCell {
     //Abstract Methods
 
     /**
+     * Setter method for the height attribute.
+     *
+     * @param height the new relative height of the cell
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    /**
      * Method to return the character associated to the instance
      *
      * @return char value, the symbol representing the object
