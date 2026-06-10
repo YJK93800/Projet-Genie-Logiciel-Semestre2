@@ -255,9 +255,7 @@ public class Forest {
                 display += this.forestGrid[i][j].display() + " ";
             }
             display += "\n";
-        }
-
-
+        }   
         return display;
     }
 
