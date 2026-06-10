@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.io.Serializable;
 
 import static com.example.demo.model.Weather.CardinalDirections.NEUTRAL;
 import static com.example.demo.model.cells.State.BURNING;
@@ -24,7 +25,7 @@ import static com.example.demo.model.cells.State.BURNING;
  * @version 21.0.8
  */
 
-public class Simulation {
+public class Simulation implements Serializable {
 
     private Forest forest;
     private static int nbFire = 0;
