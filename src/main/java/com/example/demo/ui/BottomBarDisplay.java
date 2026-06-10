@@ -1,6 +1,8 @@
 package com.example.demo.ui;
 
+import com.example.demo.simulation.SaveManager;
 import com.example.demo.simulation.Simulation;
+import com.example.demo.ui.actions.UIController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -15,10 +17,12 @@ public class BottomBarDisplay {
 
     private Simulation simulation;
     private Runnable refreshUI;
+    private UIController controller;
 
-    public BottomBarDisplay(Simulation simulation, Runnable refreshUI) {
+    public BottomBarDisplay(Simulation simulation, Runnable refreshUI, UIController controller) {
         this.simulation = simulation;
         this.refreshUI = refreshUI;
+        this.controller = controller;
     }
 
     public Parent createContent() {
@@ -28,6 +32,21 @@ public class BottomBarDisplay {
         bottomBar.setAlignment(Pos.CENTER_RIGHT);
         bottomBar.setSpacing(15);
         bottomBar.setPadding(new Insets(10, 20, 10, 20));
+
+        Button save = new Button("Save");
+        save.getStyleClass().add("nav-button");
+        save.setOnAction(e -> SaveManager.save(this.simulation, "save.ser"));
+
+        Button load = new Button("Load");
+        load.getStyleClass().add("nav-button");
+        load.setOnAction(e -> {
+            Simulation loaded = SaveManager.load("save.ser");
+            if (loaded != null) {
+                this.simulation = loaded;
+                this.controller.loadSimulation(loaded);
+                this.refreshUI.run();
+            }
+        });
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -49,7 +68,7 @@ public class BottomBarDisplay {
             this.refreshUI.run();
         });
 
-        bottomBar.getChildren().addAll(spacer, turnLabel, turnField, nextTurn);
+        bottomBar.getChildren().addAll(save, load, spacer, turnLabel, turnField, nextTurn);
 
         return bottomBar;
     }
