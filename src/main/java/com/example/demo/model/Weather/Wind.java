@@ -1,4 +1,5 @@
 package com.example.demo.model.Weather;
+import java.io.Serializable;
 
 /**
  * Represents the Wind's characteristics within the forest
@@ -7,7 +8,7 @@ package com.example.demo.model.Weather;
  * @version 21.0.8
  */
 
-public class Wind {
+public class Wind implements Serializable{
 
     private CardinalDirections windDirection;
     private double windSpeed;   // in km/h

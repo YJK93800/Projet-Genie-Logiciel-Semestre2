@@ -1,6 +1,10 @@
 package com.example.demo.ui;
 
+import com.example.demo.simulation.SaveManager;
 import com.example.demo.simulation.Simulation;
+import com.example.demo.ui.Menu.LoadPopUp;
+import com.example.demo.ui.Menu.SavePopUp;
+import com.example.demo.ui.actions.UIController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -15,10 +19,13 @@ public class BottomBarDisplay {
 
     private Simulation simulation;
     private Runnable refreshUI;
+    private UIController controller;
+    private Simulation checkpoint;
 
-    public BottomBarDisplay(Simulation simulation, Runnable refreshUI) {
+    public BottomBarDisplay(Simulation simulation, Runnable refreshUI, UIController controller) {
         this.simulation = simulation;
         this.refreshUI = refreshUI;
+        this.controller = controller;
     }
 
     public Parent createContent() {
@@ -28,6 +35,48 @@ public class BottomBarDisplay {
         bottomBar.setAlignment(Pos.CENTER_RIGHT);
         bottomBar.setSpacing(15);
         bottomBar.setPadding(new Insets(10, 20, 10, 20));
+
+        Button save = new Button("Save");
+        save.getStyleClass().add("nav-button");
+        save.setOnAction(e -> {
+            SavePopUp popup = new SavePopUp(name -> SaveManager.save(this.simulation, name));
+            popup.open();
+        });
+
+        Button load = new Button("Load");
+        load.getStyleClass().add("nav-button");
+        load.setOnAction(e -> {
+            LoadPopUp popup = new LoadPopUp(name -> {
+                Simulation loaded = SaveManager.load(name);
+                if (loaded != null) {
+                    this.simulation = loaded;
+                    this.controller.loadSimulation(loaded);
+                    this.refreshUI.run();
+                }
+            });
+            popup.open();
+        });
+
+        Button checkpoint = new Button("Set Checkpoint");
+        checkpoint.getStyleClass().add("nav-button");
+        checkpoint.setOnAction(e -> {
+            this.checkpoint = SaveManager.deepCopy(this.simulation);
+            System.out.println("Checkpoint set");
+        });
+
+        Button reset = new Button("Reset");
+        reset.getStyleClass().add("nav-button");
+        reset.setOnAction(e -> {
+            if (this.checkpoint != null) {
+                Simulation restored = SaveManager.deepCopy(this.checkpoint);
+                this.simulation = restored;
+                this.controller.loadSimulation(restored);
+                this.refreshUI.run();
+                System.out.println("Reset to checkpoint");
+            } else {
+                System.out.println("No checkpoint set");
+            }
+        });
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -49,7 +98,7 @@ public class BottomBarDisplay {
             this.refreshUI.run();
         });
 
-        bottomBar.getChildren().addAll(spacer, turnLabel, turnField, nextTurn);
+        bottomBar.getChildren().addAll(save, load, spacer, checkpoint, reset, turnLabel, turnField, nextTurn);
 
         return bottomBar;
     }

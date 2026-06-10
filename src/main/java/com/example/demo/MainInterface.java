@@ -70,7 +70,7 @@ public class MainInterface extends Application {
             view.update();
             statsDisplay.refresh();
 
-        });
+        }, controller);
 
         bottomBarHolder[0] = bottomBar;
 

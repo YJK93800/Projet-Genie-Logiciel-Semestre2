@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 
 import java.io.IOException;
 import java.util.List;
+import java.io.Serializable;
 
 import java.awt.image.BufferedImage;
 
@@ -22,7 +23,7 @@ import static java.lang.Math.min;
  * @version 21.0.8
  */
 
-public class Forest {
+public class Forest implements Serializable {
 
     ForestCell[][] forestGrid;
     Weather weather;

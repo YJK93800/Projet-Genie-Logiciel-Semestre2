@@ -1,6 +1,7 @@
 package com.example.demo.model.cells;
 
 import javafx.scene.paint.Color;
+import java.io.Serializable;
 
 /**
  * Represents a cell within the forest
@@ -10,7 +11,7 @@ import javafx.scene.paint.Color;
  */
 
 
-public abstract class ForestCell {
+public abstract class ForestCell implements Serializable {
 
     //Atributes
     protected String name;

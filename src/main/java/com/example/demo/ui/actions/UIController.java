@@ -123,6 +123,43 @@ public class UIController {
     }
 
     /**
+     * Method to load a forest grid from an already loaded simulation.
+     *
+     * @param loadedSimulation the simulation loaded from a save file
+     */
+    public void loadSimulation(Simulation loadedSimulation) {
+
+        Forest forest = loadedSimulation.getForest();
+        ForestCell[][] forestGrid = forest.getForestGrid();
+
+        int h = forestGrid.length;
+        int w = forestGrid[0].length;
+
+        onSimulationCreated.accept(loadedSimulation);
+        forestDisplay.setForest(forest);
+
+        StackPane centerStack = (StackPane) root.getCenter();
+        centerStack.getChildren().set(0, forestDisplay.createContent());
+
+        Rectangle[][] rects = forestDisplay.getRects();
+
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+
+                int row = i;
+                int col = j;
+
+                Rectangle rect = rects[i][j];
+                StackPane tile = (StackPane) rect.getParent();
+
+                tile.setOnDragDetected(e -> tile.startFullDrag());
+                tile.setOnMousePressed(e -> handleCellPressed(e, loadedSimulation, forestGrid, rect, row, col));
+                tile.setOnMouseDragEntered(e -> handleCellDragged(e, loadedSimulation, forestGrid, rect, row, col));
+            }
+        }
+    }
+
+    /**
      * Handles the initial mouse click/press interaction on a grid cell.
      */
     private void handleCellPressed(MouseEvent e, Simulation sim, ForestCell[][] grid, Rectangle rect, int row, int col) {
