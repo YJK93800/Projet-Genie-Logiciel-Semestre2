@@ -2,6 +2,8 @@ package com.example.demo.ui;
 
 import com.example.demo.simulation.SaveManager;
 import com.example.demo.simulation.Simulation;
+import com.example.demo.ui.Menu.LoadPopUp;
+import com.example.demo.ui.Menu.SavePopUp;
 import com.example.demo.ui.actions.UIController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -35,17 +37,23 @@ public class BottomBarDisplay {
 
         Button save = new Button("Save");
         save.getStyleClass().add("nav-button");
-        save.setOnAction(e -> SaveManager.save(this.simulation, "save.ser"));
+        save.setOnAction(e -> {
+            SavePopUp popup = new SavePopUp(name -> SaveManager.save(this.simulation, name));
+            popup.open();
+        });
 
         Button load = new Button("Load");
         load.getStyleClass().add("nav-button");
         load.setOnAction(e -> {
-            Simulation loaded = SaveManager.load("save.ser");
-            if (loaded != null) {
-                this.simulation = loaded;
-                this.controller.loadSimulation(loaded);
-                this.refreshUI.run();
-            }
+            LoadPopUp popup = new LoadPopUp(name -> {
+                Simulation loaded = SaveManager.load(name);
+                if (loaded != null) {
+                    this.simulation = loaded;
+                    this.controller.loadSimulation(loaded);
+                    this.refreshUI.run();
+                }
+            });
+            popup.open();
         });
 
         Region spacer = new Region();
