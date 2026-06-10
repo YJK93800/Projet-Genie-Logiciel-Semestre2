@@ -48,7 +48,7 @@ public class Grass extends Vegetation {
     }
 
     public double initializeFlammability(){
-        return 0.8;
+        return type.getFlammability();
     }
 
 
