@@ -1,5 +1,5 @@
 package com.example.demo.model.Weather;
-
+import java.io.Serializable;
 /**
  * Represents the weather within the forest
  * <p>
@@ -7,7 +7,7 @@ package com.example.demo.model.Weather;
  * @version 21.0.8
  */
 
-public class Weather {
+public class Weather implements Serializable {
 
     private WeatherType weatherType;
     private Wind wind;
