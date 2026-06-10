@@ -20,6 +20,7 @@ public class BottomBarDisplay {
     private Simulation simulation;
     private Runnable refreshUI;
     private UIController controller;
+    private Simulation checkpoint;
 
     public BottomBarDisplay(Simulation simulation, Runnable refreshUI, UIController controller) {
         this.simulation = simulation;
@@ -56,6 +57,27 @@ public class BottomBarDisplay {
             popup.open();
         });
 
+        Button checkpoint = new Button("Set Checkpoint");
+        checkpoint.getStyleClass().add("nav-button");
+        checkpoint.setOnAction(e -> {
+            this.checkpoint = SaveManager.deepCopy(this.simulation);
+            System.out.println("Checkpoint set");
+        });
+
+        Button reset = new Button("Reset");
+        reset.getStyleClass().add("nav-button");
+        reset.setOnAction(e -> {
+            if (this.checkpoint != null) {
+                Simulation restored = SaveManager.deepCopy(this.checkpoint);
+                this.simulation = restored;
+                this.controller.loadSimulation(restored);
+                this.refreshUI.run();
+                System.out.println("Reset to checkpoint");
+            } else {
+                System.out.println("No checkpoint set");
+            }
+        });
+
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -76,7 +98,7 @@ public class BottomBarDisplay {
             this.refreshUI.run();
         });
 
-        bottomBar.getChildren().addAll(save, load, spacer, turnLabel, turnField, nextTurn);
+        bottomBar.getChildren().addAll(save, load, spacer, checkpoint, reset, turnLabel, turnField, nextTurn);
 
         return bottomBar;
     }

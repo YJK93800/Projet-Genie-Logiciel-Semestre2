@@ -1,5 +1,7 @@
 package com.example.demo.simulation;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -77,5 +79,24 @@ public class SaveManager {
             file.delete();
             System.out.println("Save deleted: " + name);
         }
+    }
+
+    // Makes a deep copy of a simulation in memory (used for the checkpoint)
+    public static Simulation deepCopy(Simulation simulation) {
+        Simulation copy = null;
+        try {
+            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(byteOut);
+            out.writeObject(simulation);
+            out.close();
+
+            ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+            ObjectInputStream in = new ObjectInputStream(byteIn);
+            copy = (Simulation) in.readObject();
+            in.close();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error while copying: " + e.getMessage());
+        }
+        return copy;
     }
 }
