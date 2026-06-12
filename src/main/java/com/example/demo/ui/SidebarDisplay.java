@@ -3,6 +3,7 @@ package com.example.demo.ui;
 import com.example.demo.model.cells.ForestCell;
 import com.example.demo.model.cells.Vegetation;
 import com.example.demo.simulation.Simulation;
+import com.example.demo.ui.Menu.Statistics;
 import com.example.demo.ui.Menu.ToolsMenuDisplay;
 import com.example.demo.ui.Menu.WeatherMenuDisplay;
 import com.example.demo.ui.actions.UIController;
@@ -14,6 +15,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Manages all the buttons on the left side of the screen
+ */
+
 public class SidebarDisplay {
 
     private Simulation simulation;
@@ -22,6 +27,14 @@ public class SidebarDisplay {
     private UIController controller;
     private VBox sidebar;
 
+    /**
+     * Constructor method
+     *
+     * @param simulation simulation to be displayed
+     * @param refreshUI the method to refresh the simulation
+     * @param root
+     * @param controller the controller managing all the interactions directly with the user
+     */
     public SidebarDisplay(Simulation simulation, Runnable refreshUI, BorderPane root, UIController controller) {
         this.simulation = simulation;
         this.refreshUI = refreshUI;
@@ -65,6 +78,10 @@ public class SidebarDisplay {
         btnSettings.getStyleClass().add("nav-button");
         btnSettings.setOnAction(e -> System.out.println("Open Settings"));
 
+        Button btnStats = new Button("Statistics");
+        btnStats.getStyleClass().add("nav-button");
+        btnStats.setOnAction(e -> new Statistics(this.simulation.getForest()).open());
+
         WeatherMenuDisplay weatherComponent = new WeatherMenuDisplay(this.simulation.getForest().getWeather());
         ToolsMenuDisplay toolsComponent = new ToolsMenuDisplay();
 
@@ -103,6 +120,7 @@ public class SidebarDisplay {
                 separator(),
                 newForest,
                 btnSettings,
+                btnStats,
                 separator(),
                 weatherComponent.createMenu(),
                 toolsComponent.createMenu(),
