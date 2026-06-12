@@ -172,15 +172,15 @@ public class Simulation implements Serializable {
                 System.out.println("Turn: " + this.turn);
             }
             else if (input.equalsIgnoreCase("q")) {
-                System.out.println("Simulation arrêtée.");
+                System.out.println("Simulation stopped.");
                 break;
             }
             else {
-                System.out.println("Commande inconnue. Utilise p ou q.");
+                System.out.println("Unknown command. Use p or q.");
             }
         }
 
-        System.out.println("Simulation terminée : plus aucune plante ne brûle.");
+        System.out.println("Simulation done : no more plants burning.");
     }
 
     /**

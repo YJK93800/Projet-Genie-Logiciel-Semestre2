@@ -38,6 +38,10 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles all the UI Interactions with the user and the simulation
+ * Manages cell editing and their respective tools
+ */
 
 public class UIController {
 
@@ -109,10 +113,6 @@ public class UIController {
                     StackPane tile = (StackPane) rect.getParent();
 
                     tile.setOnDragDetected(e -> tile.startFullDrag());
-
-//                    tile.setOnMouseDragEntered(e -> handleTool(newSimulation, forestGrid, rect, row, col));
-//                    tile.setOnMouseClicked(e -> handleTool(newSimulation, forestGrid, rect, row, col));
-
                     tile.setOnMousePressed(e -> handleCellPressed(e, newSimulation, forestGrid, rect, row, col));
                     tile.setOnMouseDragEntered(e -> handleCellDragged(e, newSimulation, forestGrid, rect, row, col));
                 }
@@ -227,7 +227,14 @@ public class UIController {
         } else {
             ForestCell newCell = tool.callCell(row, col);
             if (newCell != null) {
+                if (grid[row][col] instanceof Vegetation oldPlant) {
+                    sim.getBurningPlants().remove(oldPlant);
+                    sim.getAlivePlants().remove(oldPlant);
+                }
                 grid[row][col] = newCell;
+                if (newCell instanceof Vegetation newPlant && newPlant.getState() == State.ALIVE) {
+                    sim.getAlivePlants().add(newPlant);
+                }
                 rect.setFill(newCell.displayColor());
             }
         }
@@ -413,7 +420,14 @@ public class UIController {
                     };
 
                     if (newCell != null) {
+                        if (grid[r][c] instanceof Vegetation oldPlant) {
+                            sim.getBurningPlants().remove(oldPlant);
+                            sim.getAlivePlants().remove(oldPlant);
+                        }
                         grid[r][c] = newCell;
+                        if (newCell instanceof Vegetation newPlant && newPlant.getState() == State.ALIVE) {
+                            sim.getAlivePlants().add(newPlant);
+                        }
                         forestDisplay.getRects()[r][c].setFill(newCell.displayColor());
                     }
                 }

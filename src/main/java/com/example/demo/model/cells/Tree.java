@@ -102,18 +102,7 @@ public class Tree extends Vegetation {
     }
 
     public double initializeFlammability(){
-        switch(this.specie){
-            case OAK:
-                return 0.2;
-            case BIRCH:
-                return 0.1;
-            case PINE:
-                return 0.5;
-            case ACACIA:
-                return 0.05;
-            default:
-                return 0.25;
-        }
+        return this.specie.getFlammability();
     }
 
 
