@@ -1,10 +1,11 @@
 package com.example.demo.ui;
 
+import com.example.demo.model.cells.ForestCell;
+import com.example.demo.model.cells.Vegetation;
 import com.example.demo.simulation.Simulation;
 import com.example.demo.ui.Menu.ToolsMenuDisplay;
 import com.example.demo.ui.Menu.WeatherMenuDisplay;
 import com.example.demo.ui.actions.UIController;
-import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -67,11 +68,26 @@ public class SidebarDisplay {
         WeatherMenuDisplay weatherComponent = new WeatherMenuDisplay(this.simulation.getForest().getWeather());
         ToolsMenuDisplay toolsComponent = new ToolsMenuDisplay();
 
-        Button nextTurn = new Button("=> Next Turn");
-        nextTurn.getStyleClass().add("nav-button");
-        nextTurn.setOnAction(e -> {
-            this.simulation.spreadFireOneTurn();
-            Platform.runLater(() -> this.refreshUI.run());
+        Button randomFire = new Button("🔥  Random Fire");
+        randomFire.getStyleClass().add("nav-button");
+        randomFire.setOnAction(e -> {
+            ForestCell[][] grid = this.simulation.getForest().getForestGrid();
+            boolean done = false;
+            int tries = 0;
+            while (!done && tries < 1000) {
+                int i = (int) (Math.random() * grid.length);
+                int j = (int) (Math.random() * grid[0].length);
+                if (grid[i][j] instanceof Vegetation) {
+                    try {
+                        this.simulation.ignitePlant(i, j);
+                        done = true;
+                    } catch (Exception ex) {
+                        // cell already burning or dead, retry
+                    }
+                }
+                tries++;
+            }
+            this.refreshUI.run();
         });
 
         Button test = new Button("Test");
@@ -91,7 +107,7 @@ public class SidebarDisplay {
                 weatherComponent.createMenu(),
                 toolsComponent.createMenu(),
                 separator(),
-                nextTurn,
+                randomFire,
                 test,
                 tutorial
         );
