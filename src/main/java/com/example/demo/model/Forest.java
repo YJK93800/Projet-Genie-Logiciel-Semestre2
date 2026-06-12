@@ -224,6 +224,8 @@ public class Forest implements Serializable {
                 int g = colorGrid[i][j][1];
                 int b = colorGrid[i][j][2];
 
+                if (b > g) b = Math.min(255, b*4);
+
                 int treeDist = colorDistanceSquared(r, g, b, 20, 90, 20);
                 int grassDist = colorDistanceSquared(r, g, b, 120, 220, 120);
                 int waterDist = colorDistanceSquared(r, g, b, 40, 100, 220);
