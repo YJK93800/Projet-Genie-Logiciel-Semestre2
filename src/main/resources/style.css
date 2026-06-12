@@ -225,3 +225,9 @@
     -fx-stroke: #ecf0f1;
     -fx-stroke-width: 1;
 }
+
+/* Vertical separators bottom bar */
+.bottom-bar .separator:vertical .line {
+    -fx-border-color: #46586b;
+    -fx-border-width: 0 1 0 0;
+}
