@@ -299,6 +299,18 @@ public class Simulation implements Serializable {
             probability *= windFactor;
         }
 
+        int dHeight = target.getHeight() - source.getHeight();
+        double heightFactor;
+        if (dHeight > 0)      heightFactor = 1.3;
+        else if (dHeight < 0) heightFactor = 0.05;
+        else                  heightFactor = 1.0;
+        probability *= heightFactor;
+
+        double distanceFactor;
+        if (dist > 1.0) distanceFactor = 0.7;
+        else            distanceFactor = 1.0;
+        probability *= distanceFactor;
+
         return Math.max(0.0, Math.min(probability, 1.0));
     }
 
