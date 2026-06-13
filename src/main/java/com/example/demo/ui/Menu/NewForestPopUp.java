@@ -60,6 +60,12 @@ public class NewForestPopUp {
                 width = Integer.parseInt(widthField.getText());
                 height = Integer.parseInt(heightField.getText());
 
+                if (width > 100 || height > 100 || width <= 0 || height <= 0) {
+                    errorLabel.setText("Size must be between 1 and 100");
+                    errorLabel.setVisible(true);
+                    return;
+                }
+
                 popup.close();
 
                 if (onFinish != null) {
@@ -68,6 +74,7 @@ public class NewForestPopUp {
             } catch (NumberFormatException ex) {
                 widthField.setStyle("-fx-border-color: red;");
                 heightField.setStyle("-fx-border-color: red;");
+                errorLabel.setText("Wrong type of inputs");
                 errorLabel.setVisible(true);
             }
         });

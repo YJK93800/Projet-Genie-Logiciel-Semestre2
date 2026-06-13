@@ -40,3 +40,4 @@ build/
 ### Forest Simulator saves ###
 saves/
 *.ser
+*.zip
