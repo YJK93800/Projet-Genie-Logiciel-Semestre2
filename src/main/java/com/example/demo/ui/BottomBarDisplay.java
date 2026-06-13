@@ -22,6 +22,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 
+/**
+ * Bottom bar of the application
+ * Contains the save/load, checkpoint/reset, auto play and next turn controls
+ * <p>
+ * @version 21.0.8
+ */
+
 public class BottomBarDisplay {
 
     private Simulation simulation;
@@ -33,12 +40,24 @@ public class BottomBarDisplay {
     private double speed = 1.0;
     private Button playPause;
 
+    /**
+     * Constructor Method
+     *
+     * @param simulation the ongoing simulation
+     * @param refreshUI Runnable used to refresh the interface after an action
+     * @param controller UIController used to rebuild the grid when a simulation is loaded
+     */
     public BottomBarDisplay(Simulation simulation, Runnable refreshUI, UIController controller) {
         this.simulation = simulation;
         this.refreshUI = refreshUI;
         this.controller = controller;
     }
 
+    /**
+     * Method that builds the bottom bar with all of its buttons
+     *
+     * @return Parent value, the bottom bar to be displayed
+     */
     public Parent createContent() {
 
         HBox bottomBar = new HBox();
@@ -125,11 +144,15 @@ public class BottomBarDisplay {
         Button nextTurn = new Button("=> Next Turn");
         nextTurn.getStyleClass().add("nav-button");
         nextTurn.setOnAction(e -> {
-            int n = Integer.parseInt(turnField.getText());
-            for (int i = 0; i < n; i++) {
-                this.simulation.spreadFireOneTurn();
+            try {
+                int n = Integer.parseInt(turnField.getText());
+                for (int i = 0; i < n; i++) {
+                    this.simulation.spreadFireOneTurn();
+                }
+                this.refreshUI.run();
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid number of turns");
             }
-            this.refreshUI.run();
         });
 
         bottomBar.getChildren().addAll(
@@ -146,9 +169,9 @@ public class BottomBarDisplay {
     }
 
     /**
-     * Creates a vertical separator line between button groups
+     * Method that creates a vertical separator line between button groups
      *
-     * @return a vertical separator line
+     * @return Separator value, the vertical line
      */
     private Separator verticalSeparator() {
         Separator sep = new Separator(Orientation.VERTICAL);
@@ -156,7 +179,9 @@ public class BottomBarDisplay {
     }
 
     /**
-     * Starts the autoplay timeline at the current speed
+     * Method that starts the auto play at the current speed
+     * Uses a Timeline that runs one turn at a regular interval
+     * Stops automatically when no plant is burning anymore
      */
     private void startAutoPlay() {
         if (timeline != null) {
@@ -180,7 +205,7 @@ public class BottomBarDisplay {
     }
 
     /**
-     * Stops the autoplay
+     * Method that stops the auto play
      */
     private void stopAutoPlay() {
         if (timeline != null) {
@@ -190,9 +215,9 @@ public class BottomBarDisplay {
     }
 
     /**
-     * Changes the speed and restarts the timeline if it was running
+     * Method that changes the speed and restarts the timeline if it was running
      *
-     * @param newSpeed the new speed
+     * @param newSpeed double value, the new speed multiplier
      */
     private void setSpeed(double newSpeed) {
         this.speed = newSpeed;
@@ -203,7 +228,7 @@ public class BottomBarDisplay {
         }
     }
 
-    //setter method
+    // Setter method
 
     /**
      * Setter method of the simulation attribute

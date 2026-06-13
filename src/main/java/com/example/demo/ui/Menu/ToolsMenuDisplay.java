@@ -7,12 +7,27 @@ import com.example.demo.ui.editor.tools.RectangleSelectionTool;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
+/**
+ * Menu display grouping all the editing tools of the forest
+ * Contains the plant menu, the environment menu, the selection tools and the ignite tool
+ * <p>
+ * @version 21.0.8
+ */
+
 public class ToolsMenuDisplay extends AbstractMenuDisplay {
 
+    /**
+     * Constructor Method
+     */
     public ToolsMenuDisplay() {
         super("🛠  Tools");
     }
 
+    /**
+     * Method that fills the Tools submenu with the editing tools
+     *
+     * @param subMenuContainer VBox value, the container of the submenu
+     */
     @Override
     protected void buildSubMenuContent(VBox subMenuContainer) {
 
