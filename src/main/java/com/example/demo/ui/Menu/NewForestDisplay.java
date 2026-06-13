@@ -1,5 +1,6 @@
 package com.example.demo.ui.Menu;
 
+import com.example.demo.ui.actions.UIController;
 import com.example.demo.ui.editor.Editor;
 import com.example.demo.ui.editor.tools.SoilTool;
 import com.example.demo.ui.editor.tools.WaterTool;
@@ -10,22 +11,17 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+public class NewForestDisplay extends AbstractMenuDisplay{
 
-/**
- * Menu display of the environmental elements of a forest
- * <p>
- * @author Yann Kong IN1 GI1
- * @version 21.0.8
- */
+    private UIController controller;
 
-public class EnvironmentMenuDisplay extends AbstractMenuDisplay {
-
-    public EnvironmentMenuDisplay() {
-        super("Environment");
+    public NewForestDisplay(UIController controller) {
+        super("Create Forest");
+        this.controller = controller;
     }
 
     /**
-     * Creates the folding menu for the Environment section
+     * Creates the folding menu for the New Forest section
      *
      * @param subMenuContainer
      */
@@ -33,30 +29,30 @@ public class EnvironmentMenuDisplay extends AbstractMenuDisplay {
     protected void buildSubMenuContent(VBox subMenuContainer) {
 
 
-        // Water Button
-        Button waterButton = new Button("Water");
-        waterButton.getStyleClass().add("nav-button");
-        waterButton.setOnAction(e ->
+        // Button to create the forest Manually
+        Button btnManual = new Button("Manual Creation");
+        btnManual.getStyleClass().add("nav-button");
+        btnManual.setOnAction(e ->
                 {
-                    Editor.setCurrentTool(new WaterTool());
-                    System.out.println("Water selected");
+                    controller.newForestAction();
+                    System.out.println("Manually Creating the Forest");
                 }
         );
 
-        // Soil Button
-        Button soilButton = new Button("Soil");
-        soilButton.getStyleClass().add("nav-button");
-        soilButton.setOnAction(e ->
+        // Button to import a picture to create the forest
+        Button btnImage = new Button("Import picture");
+        btnImage.getStyleClass().add("nav-button");
+        btnImage.setOnAction(e ->
                 {
-                    Editor.setCurrentTool(new SoilTool());
-                    System.out.println("Soil selected");
+                    controller.newForestPictureAction();
+                    System.out.println("Importing Picture");
                 }
         );
 
 
         subMenuContainer.getChildren().addAll(
-                waterButton,
-                soilButton
+                btnManual,
+                btnImage
         );
     }
 
@@ -94,4 +90,3 @@ public class EnvironmentMenuDisplay extends AbstractMenuDisplay {
     }
 
 }
-
