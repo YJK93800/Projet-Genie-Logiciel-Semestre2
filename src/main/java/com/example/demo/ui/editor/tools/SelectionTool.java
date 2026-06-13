@@ -4,8 +4,9 @@ import com.example.demo.model.cells.ForestCell;
 import javafx.scene.paint.Color;
 
 /**
- * Outil utilisé pour sélectionner des cases dans la grille au lieu de les peindre.
+ * Tool used to select cells in the grid instead of painting them
  */
+
 public class SelectionTool implements FillCell {
 
     @Override

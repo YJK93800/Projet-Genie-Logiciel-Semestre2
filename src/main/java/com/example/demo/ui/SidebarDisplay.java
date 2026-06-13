@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import com.example.demo.ui.Menu.NewForestDisplay;
 
 /**
  * Manages all the buttons on the left side of the screen
@@ -70,9 +71,7 @@ public class SidebarDisplay {
         Label title = new Label("Forest Simulator");
         title.getStyleClass().add("sidebar-title");
 
-        Button newForest = new Button("+  New");
-        newForest.getStyleClass().add("nav-button");
-        newForest.setOnAction(e -> controller.newForestAction());
+        NewForestDisplay newForestComponent = new NewForestDisplay(this.controller);
 
         Button btnSettings = new Button("⚙  Settings");
         btnSettings.getStyleClass().add("nav-button");
@@ -118,7 +117,7 @@ public class SidebarDisplay {
         sidebar.getChildren().addAll(
                 title,
                 separator(),
-                newForest,
+                newForestComponent.createMenu(),
                 btnSettings,
                 btnStats,
                 separator(),
@@ -131,7 +130,11 @@ public class SidebarDisplay {
         );
     }
 
-    // Creates a thin separator line between button groups
+    /**
+     * Creates a thin separator line between button groups
+     *
+     * @return the thin separator line
+     */
     private Pane separator() {
         Pane line = new Pane();
         line.getStyleClass().add("sidebar-separator");

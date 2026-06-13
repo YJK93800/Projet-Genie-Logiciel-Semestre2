@@ -96,7 +96,7 @@ public class ForestDisplay {
 
     /**
      * Setter method for the forest attribute.
-     * Reconstruit la grille si appelé après createContent().
+     * Reconstruct the grid if called after createContent()
      *
      * @param forest new forest to draw
      */

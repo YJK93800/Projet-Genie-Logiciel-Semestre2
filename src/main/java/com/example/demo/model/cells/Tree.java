@@ -10,7 +10,7 @@ public class Tree extends Vegetation {
     //Method
 
     /**
-     * Contructor Method
+     * Constructor Method
      *
      * @param name String value, name of the tree
      * @param state State enum value, current state of the tree

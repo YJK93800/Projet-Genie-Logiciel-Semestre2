@@ -29,7 +29,6 @@ public class NewForestPopUp {
     /**
      * Method that creates a Pop-up window that inputs the dimensions of the new grid
      */
-
     public void open() {
 
         Stage popup = new Stage();

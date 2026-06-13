@@ -1,5 +1,6 @@
 package com.example.demo.model.Weather;
 import java.io.Serializable;
+
 /**
  * Represents the weather within the forest
  * <p>

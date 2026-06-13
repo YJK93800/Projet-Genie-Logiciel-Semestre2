@@ -16,7 +16,6 @@ public abstract class Vegetation extends ForestCell {
      * @param xPos int value, position  length-wise of the plant within the forest
      * @param yPos int value, position width-wise of the plant within the forest
      */
-
     public Vegetation(String name, State state, int xPos, int yPos, int height, int combustionTime){
         super(name, xPos, yPos, height);
         this.state = state;

@@ -141,8 +141,8 @@ public class Forest implements Serializable {
         int cellWidth = 10;
         int cellHeight = 10;
 
-        int gridCol = imgWidth/cellWidth + 1;
-        int gridRow = imgHeight/cellHeight + 1;
+        int gridCol = (imgWidth + cellWidth - 1) / cellWidth;
+        int gridRow = (imgHeight + cellHeight - 1) / cellHeight;
 
         int[][][] result = new int[gridRow][gridCol][3];
 

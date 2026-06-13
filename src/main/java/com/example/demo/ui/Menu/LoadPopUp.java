@@ -46,7 +46,12 @@ public class LoadPopUp {
         popup.showAndWait();
     }
 
-    // Builds the list of saves with a load button and a delete button on each row
+    /**
+     * Builds the list of saves with a load button and a delete button on each row
+     *
+     * @param layout the Vbox
+     * @param popup the Stage
+     */
     private void buildList(VBox layout, Stage popup) {
 
         ArrayList<String> saves = SaveManager.getSaveNames();
