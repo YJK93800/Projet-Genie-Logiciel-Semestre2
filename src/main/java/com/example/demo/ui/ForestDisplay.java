@@ -10,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Scale;
 
 /**
  * Class that is used to display the forest
@@ -21,6 +22,10 @@ public class ForestDisplay {
     private Forest forest;
     private GridPane grid;
     private Rectangle[][] rects;
+    private Scale scale = new Scale(1.0, 1.0);
+    private static final double MIN_ZOOM = 0.2;
+    private static final double MAX_ZOOM = 3.0;
+    private static final double ZOOM_STEP = 0.1;
 
     public ForestDisplay(Forest forest) {
         this.forest = forest;
@@ -29,6 +34,7 @@ public class ForestDisplay {
     public Parent createContent() {
         grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
+        grid.getTransforms().add(scale);
         buildGrid();
 
         StackPane gridWrapper = new StackPane(grid);
@@ -40,7 +46,6 @@ public class ForestDisplay {
 
         return scrollPane;
     }
-
 
     private void buildGrid() {
         grid.getChildren().clear();
@@ -67,7 +72,6 @@ public class ForestDisplay {
         }
     }
 
-
     public void update() {
         ForestCell[][] forestGrid = forest.getForestGrid();
 
@@ -81,15 +85,27 @@ public class ForestDisplay {
         for (int i = 0; i < forestGrid.length; i++) {
             for (int j = 0; j < forestGrid[0].length; j++) {
                 ForestCell cell = forestGrid[i][j];
-                Color color;
-                if (cell == null) {
-                    color = Color.LIGHTGRAY;
-                } else {
-                    color = cell.displayColor();
-                }
-                rects[i][j].setFill(color);
+                rects[i][j].setFill(cell == null ? Color.LIGHTGRAY : cell.displayColor());
             }
         }
+    }
+
+    /**
+     * Zooms in the forest display
+     */
+    public void zoomIn() {
+        double newZoom = Math.min(scale.getX() + ZOOM_STEP, MAX_ZOOM);
+        scale.setX(newZoom);
+        scale.setY(newZoom);
+    }
+
+    /**
+     * Zooms out in the forest display
+     */
+    public void zoomOut() {
+        double newZoom = Math.max(scale.getX() - ZOOM_STEP, MIN_ZOOM);
+        scale.setX(newZoom);
+        scale.setY(newZoom);
     }
 
     // Setter Method

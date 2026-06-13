@@ -114,6 +114,12 @@ public class SidebarDisplay {
         tutorial.getStyleClass().add("nav-button");
         tutorial.setOnAction(e -> controller.openTutorial());
 
+        Button zoomIn = new Button("🔍+");
+        zoomIn.setOnAction(e -> controller.zoomIn());
+
+        Button zoomOut = new Button("🔍-");
+        zoomOut.setOnAction(e -> controller.zoomOut());
+
         sidebar.getChildren().addAll(
                 title,
                 separator(),
@@ -126,7 +132,9 @@ public class SidebarDisplay {
                 separator(),
                 randomFire,
                 test,
-                tutorial
+                tutorial,
+                zoomIn,
+                zoomOut
         );
     }
 
