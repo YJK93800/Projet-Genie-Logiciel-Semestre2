@@ -29,7 +29,6 @@ public class Simulation implements Serializable {
 
     private Forest forest;
     private static int nbFire = 0;
-    private double weatherModifier;
     private int turn = 0;
     private HashSet<Vegetation> burningPlants = new HashSet<>();
     private HashSet<Vegetation> alivePlants = new HashSet<>();
@@ -42,7 +41,6 @@ public class Simulation implements Serializable {
      */
     public Simulation(Forest forest){
         this.forest = forest;
-        this.weatherModifier = initializeWeatherModifier();
         initializeAlivePlants();
     }
 
@@ -61,13 +59,6 @@ public class Simulation implements Serializable {
      * @return self-explanatory
      */
     public static int getNbFire(){return nbFire;}
-
-    /**
-     * Getter method of the weatherModifier
-     *
-     * @return self-explanatory
-     */
-    public double weatherModifier(){return this.weatherModifier;}
 
     /**
      * Getter method of the turn attribute
@@ -107,14 +98,13 @@ public class Simulation implements Serializable {
     private double initializeWeatherModifier() {
         Weather w = this.forest.getWeather();
 
-        double temp = w.getTemperature() / 40.0;
-        double sun = w.getSunlightIntensity() / 100.0;
+        double temp     = w.getTemperature() / 50.0;
+        double sun      = w.getSunlightIntensity() / 100.0;
         double humidity = w.getHumidity() / 100.0;
 
-        double modifier = 1.0 + temp * 1.0 + sun * 0.8;
-        modifier *= (1.0 - 0.4 * humidity);
+        double modifier = (0.5 + temp * 0.8 + sun * 0.5) * Math.pow(1.0 - humidity, 2.0);
 
-        return Math.max(0.3, Math.min(modifier, 3.0));
+        return Math.max(0.0, Math.min(modifier, 3.0));
     }
 
     /**
@@ -311,10 +301,10 @@ public class Simulation implements Serializable {
         double dx = dxCell / dist;
         double dy = dyCell / dist;
 
-        double base = 0.45;
+        double base = 0.7;
         double flammability = (source.getFlammability() + target.getFlammability()) / 2.0;
 
-        double probability = base * flammability * this.weatherModifier;
+        double probability = base * flammability * initializeWeatherModifier();
 
         if (wind.getWindDirection() != NEUTRAL) {
             double wx = wind.getWindDirection().getXPos();
