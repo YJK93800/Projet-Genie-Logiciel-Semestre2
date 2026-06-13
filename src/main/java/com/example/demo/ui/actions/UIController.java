@@ -276,7 +276,18 @@ public class UIController {
         }
     }
 
-
+    /**
+     * Applies the current active tool (non-selection tool) to a single specific cell.
+     * It handles cell ignition or cell transformation (placing grass, trees, water...)
+     * and updates collections accordingly.
+     *
+     * @param tool the tool currently active in the editor
+     * @param sim  the current simulation instance
+     * @param grid the backing matrix containing all forest cells
+     * @param rect the JavaFX graphical rectangle representation of the cell
+     * @param row  the row index of the targeted cell
+     * @param col  the column index of the targeted cell
+     */
     private void handleStandardTool(FillCell tool, Simulation sim, ForestCell[][] grid, Rectangle rect, int row, int col) {
         if (tool instanceof IgniteTool) {
             try {
@@ -303,9 +314,16 @@ public class UIController {
 
 
 
-
-
-
+    /**
+     * Toggles the selection state of a cell (adds it if absent, removes it if present).
+     * Used mainly for individual clicks when selecting cells.
+     *
+     * @param row  the row index of the cell
+     * @param col  the column index of the cell
+     * @param rect the JavaFX shape of the cell to update visually
+     * @param grid the forest cell matrix
+     * @param sim  the current simulation instance
+     */
     private void toggleSelection(int row, int col, Rectangle rect, ForestCell[][] grid, Simulation sim) {
         String key = row + "," + col;
         if (selectedCells.contains(key)) {
@@ -319,6 +337,15 @@ public class UIController {
         updatePropertiesPanel(grid, sim);
     }
 
+    /**
+     * Adds a specific cell to the selection set and updates its style class if not already selected.
+     *
+     * @param row  the row index of the cell
+     * @param col  the column index of the cell
+     * @param rect the JavaFX shape of the cell to update visually
+     * @param grid the forest cell matrix
+     * @param sim  the current simulation instance
+     */
     private void addCellToSelection(int row, int col, Rectangle rect, ForestCell[][] grid, Simulation sim) {
         String key = row + "," + col;
         if (!selectedCells.contains(key)) {
@@ -328,6 +355,11 @@ public class UIController {
         }
     }
 
+    /**
+     * Resets the active selection to match the saved baseline selection.
+     * This removes any temporary visual highlight styling from cells that were dragged over
+     * but are no longer inside the current dragging scope.
+     */
     private void resetToBaseline() {
         Rectangle[][] rects = forestDisplay.getRects();
         for (String key : selectedCells) {
@@ -343,6 +375,10 @@ public class UIController {
         selectedCells.addAll(baselineSelection);
     }
 
+    /**
+     * Deselects all currently selected cells, resets their visual borders to default,
+     * flushes the selection, and removes the sidebar property panel.
+     */
     private void clearSelection() {
         Rectangle[][] rects = forestDisplay.getRects();
         for (String key : selectedCells) {
@@ -357,6 +393,15 @@ public class UIController {
         root.setRight(null);
     }
 
+    /**
+     * Dynamically builds, updates, and displays the right-hand side properties panel
+     * based on the common attributes of the currently selected cells.
+     * If the selection contains mixed cell types, states, heights, or species, it aggregates
+     * them displaying "Mixed" or adapts the actionable conversion buttons accordingly.
+     *
+     * @param grid the current forest cell matrix
+     * @param sim  the active simulation context to update when modifying cell properties
+     */
     private void updatePropertiesPanel(ForestCell[][] grid, Simulation sim) {
         if (selectedCells.isEmpty()) {
             root.setRight(null);

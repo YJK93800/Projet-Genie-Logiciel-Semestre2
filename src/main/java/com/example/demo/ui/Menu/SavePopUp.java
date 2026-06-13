@@ -11,14 +11,28 @@ import javafx.stage.Stage;
 
 import java.util.function.Consumer;
 
+/**
+ * Pop up Window used to save a simulation under a chosen name
+ * <p>
+ * @version 21.0.8
+ */
+
 public class SavePopUp {
 
     private Consumer<String> onConfirm;
 
+    /**
+     * Constructor Method
+     *
+     * @param onConfirm Consumer called with the chosen name when the user confirms
+     */
     public SavePopUp(Consumer<String> onConfirm) {
         this.onConfirm = onConfirm;
     }
 
+    /**
+     * Method that creates a Pop-up window asking for the name of the save
+     */
     public void open() {
 
         Stage popup = new Stage();

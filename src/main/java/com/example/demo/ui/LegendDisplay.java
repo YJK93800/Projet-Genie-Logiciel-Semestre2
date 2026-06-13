@@ -12,8 +12,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+
+/**
+ * Component responsible for displaying the color legend of the wildfire simulation.
+ * It provides a floating graphical overlay containing an information box
+ * that maps JavaFX Color values to their corresponding environmental grid states.
+ *
+ */
 public class LegendDisplay {
 
+
+    /**
+     * Builds and structures the legend visual components.
+     */
     public Parent createContent() {
         StackPane container = new StackPane();
         container.setPickOnBounds(false);
@@ -50,6 +61,13 @@ public class LegendDisplay {
     }
 
 
+    /**
+     * Method to build an item for the legend.
+     * Each item consists of a small colored preview square alongside its descriptive text label.
+     *
+     * @param color the background Color to apply to the preview rectangle
+     * @param text  the descriptive text label representing the cell type or state
+     */
     private HBox createLegendItem(Color color, String text) {
         Rectangle rect = new Rectangle(15, 15);
         rect.setFill(color);
