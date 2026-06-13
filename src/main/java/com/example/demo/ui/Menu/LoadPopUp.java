@@ -29,11 +29,20 @@ public class LoadPopUp {
         popup.setTitle("Load");
 
         VBox layout = new VBox(10);
-        layout.getChildren().add(new Label("Choose a save"));
+        layout.getStyleClass().add("popup-container");
+        layout.setAlignment(Pos.CENTER_LEFT);
+
+        Label titleLabel = new Label("Choose a save");
+        titleLabel.getStyleClass().add("popup-label");
+        layout.getChildren().add(titleLabel);
 
         buildList(layout, popup);
 
-        popup.setScene(new Scene(layout, 280, 300));
+        Scene scene = new Scene(layout, 280, 320);
+        String css = getClass().getResource("/style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+
+        popup.setScene(scene);
         popup.showAndWait();
     }
 
@@ -48,26 +57,31 @@ public class LoadPopUp {
         ArrayList<String> saves = SaveManager.getSaveNames();
 
         if (saves.isEmpty()) {
-            layout.getChildren().add(new Label("No save found"));
+            Label empty = new Label("No save found");
+            empty.getStyleClass().add("popup-label");
+            layout.getChildren().add(empty);
             return;
         }
 
         for (String name : saves) {
 
             Button loadBtn = new Button(name);
+            loadBtn.getStyleClass().add("forest-button");
+            loadBtn.setMaxWidth(Double.MAX_VALUE);
+            HBox.setHgrow(loadBtn, Priority.ALWAYS);
             loadBtn.setOnAction(e -> {
                 popup.close();
                 onSelect.accept(name);
             });
-            HBox.setHgrow(loadBtn, Priority.ALWAYS);
-            loadBtn.setMaxWidth(Double.MAX_VALUE);
 
             Button deleteBtn = new Button("X");
+            deleteBtn.getStyleClass().add("forest-button");
             deleteBtn.setOnAction(e -> {
                 SaveManager.delete(name);
-                // rebuild the list after deleting
                 layout.getChildren().clear();
-                layout.getChildren().add(new Label("Choose a save"));
+                Label titleLabel = new Label("Choose a save");
+                titleLabel.getStyleClass().add("popup-label");
+                layout.getChildren().add(titleLabel);
                 buildList(layout, popup);
             });
 

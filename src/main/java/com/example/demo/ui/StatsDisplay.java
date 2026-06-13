@@ -7,6 +7,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+/**
+ * Handles the general statistics of the simulation
+ */
+
 public class StatsDisplay {
 
     private Simulation simulation;
@@ -14,13 +18,28 @@ public class StatsDisplay {
     private Label lblAlive;
     private Label lblBurning;
 
+    /**
+     * Constructor Method
+     * @param simulation the current simulation being displayed
+     */
     public StatsDisplay(Simulation simulation) {
         this.simulation = simulation;
     }
 
+    /**
+     * Setter method for the simulation attribute
+     *
+     * @param simulation the current simulation being played
+     */
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
     }
+
+    /**
+     * Creates the box containing all the general statistics
+     *
+     * @return Parent instance containing all the elements beings displayed
+     */
 
     public Parent createContent() {
         HBox statsPanel = new HBox(25);
@@ -40,6 +59,9 @@ public class StatsDisplay {
         return statsPanel;
     }
 
+    /**
+     * Refreshes the current generals stats to the actual ones
+     */
     public void refresh() {
         if (lblTurn != null) {
             lblTurn.setText("Turn: " + simulation.getTurn());
