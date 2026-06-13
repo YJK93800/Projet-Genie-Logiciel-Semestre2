@@ -4,7 +4,7 @@ import com.example.demo.model.cells.ForestCell;
 import javafx.scene.paint.Color;
 
 /**
- * Represents a marquee/rectangle selection tool for the forest grid.
+ * Tool used to select cells in the grid in a rectangle shape instead of painting them
  */
 
 public class RectangleSelectionTool implements FillCell {
@@ -15,6 +15,6 @@ public class RectangleSelectionTool implements FillCell {
 
     @Override
     public ForestCell callCell(int row, int col) {
-        return null; // Selection tools do not paint cells directly
+        return null;
     }
 }

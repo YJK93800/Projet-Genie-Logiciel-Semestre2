@@ -8,8 +8,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public abstract class AbstractMenuDisplay {
 
+/**
+ * Abstract base class representing a collapsible navigation menu component in the user interface.
+ * This class follows a template-like pattern where it handles the visual toggle behavior
+ * (expanding/collapsing) of a sub-menu section, while leaving the responsibility of
+ * populating the specific sub-menu content to its concrete subclasses.
+ */
+public abstract class AbstractMenuDisplay {
+    /**
+     * The display title of the menu item, used as the main label on the toggle button.
+     */
     private final String menuTitle;
 
     /**
@@ -59,6 +68,13 @@ public abstract class AbstractMenuDisplay {
 
     /**
      * Shared utility method to easily create aligned input fields.
+     * Creates a standardized horizontal layout container containing a structured text label
+     * and a pre-formatted numerical/text input field. Useful for keeping UI consistency
+     * across different menu forms.
+     *
+     * @param labelText    the text description to display next to the input field
+     * @param defaultValue the initial value to populate within the text input field
+     * @return an HBox containing the styled label and text field properly aligned
      */
     protected HBox createInputField(String labelText, String defaultValue) {
         HBox row = new HBox();

@@ -109,8 +109,11 @@ public class Simulation implements Serializable {
         return Math.max(0.3, Math.min(modifier, 3.0));
     }
 
-
-
+    /**
+     * Initializes the set of alive plants by scanning the entire forest grid.
+     * Clears any existing data in the alive plants set and adds all vegetation
+     * cells that currently have an ALIVE state.
+     */
     private void initializeAlivePlants() {
         this.alivePlants.clear();
         ForestCell[][] grid = this.forest.getForestGrid();
