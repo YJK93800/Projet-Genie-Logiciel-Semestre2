@@ -79,7 +79,7 @@ public class SidebarDisplay {
 
         Button btnStats = new Button("Statistics");
         btnStats.getStyleClass().add("nav-button");
-        btnStats.setOnAction(e -> new Statistics(this.simulation.getForest()).open());
+        btnStats.setOnAction(e -> new Statistics(this.simulation).open());
 
         WeatherMenuDisplay weatherComponent = new WeatherMenuDisplay(this.simulation.getForest().getWeather());
         ToolsMenuDisplay toolsComponent = new ToolsMenuDisplay();

@@ -2,15 +2,20 @@ package com.example.demo.ui.Menu;
 
 import com.example.demo.model.Forest;
 import com.example.demo.model.cells.*;
+import com.example.demo.simulation.Simulation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,16 +24,16 @@ import java.util.Map;
  */
 public class Statistics {
 
-    private Forest forest;
+    private Simulation simulation;
 
 
     /**
      * Constructor Method
      *
-     * @param forest the forest tied to the simulation
+     * @param simulation the simulation being displayed
      */
-    public Statistics(Forest forest) {
-        this.forest = forest;
+    public Statistics(Simulation simulation) {
+        this.simulation = simulation;
     }
 
     /**
@@ -53,11 +58,14 @@ public class Statistics {
         chart2Box.setAlignment(Pos.CENTER);
         chart2Box.getChildren().add(buildVegetationStatePieChart());
 
-        root.getChildren().addAll(chart1Box, chart2Box);
+        VBox chart3Box = new VBox();
+        chart3Box.getStyleClass().add("statistics-card");
+        chart3Box.setAlignment(Pos.CENTER);
+        chart3Box.getChildren().add(buildProgressionLineChart());
 
-        Scene scene = new Scene(root, 1200, 600);
+        root.getChildren().addAll(chart1Box, chart2Box, chart3Box);
 
-
+        Scene scene = new Scene(root, 1600, 600);
         scene.getStylesheets().add(
                 getClass().getResource("/style.css").toExternalForm()
         );
@@ -72,6 +80,9 @@ public class Statistics {
      * @return
      */
     private PieChart buildCellTypePieChart() {
+
+        Forest forest = this.simulation.getForest();
+
         int water = 0, soil = 0, grass = 0;
         Map<String, Integer> treeCount = new HashMap<>();
 
@@ -115,6 +126,7 @@ public class Statistics {
      * @return
      */
     private PieChart buildVegetationStatePieChart() {
+        Forest forest = this.simulation.getForest();
         int alive = 0, burning = 0, dead = 0;
 
         ForestCell[][] grid = forest.getForestGrid();
@@ -147,6 +159,41 @@ public class Statistics {
 
         PieChart chart = new PieChart(data);
         chart.setTitle("Vegetation State Distribution");
+        return chart;
+    }
+
+    /**
+     * Creates a line chart diagram of the evolution of the fire
+     *
+     * @return self-explanatory
+     */
+
+    private LineChart<Number, Number> buildProgressionLineChart() {
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Turn");
+        yAxis.setLabel("Plants");
+
+        LineChart<Number, Number> chart = new LineChart<>(xAxis, yAxis);
+        chart.setTitle("Fire Progression");
+
+        XYChart.Series<Number, Number> aliveSeries   = new XYChart.Series<>();
+        XYChart.Series<Number, Number> burningSeries = new XYChart.Series<>();
+        XYChart.Series<Number, Number> deadSeries    = new XYChart.Series<>();
+
+        aliveSeries.setName("Alive");
+        burningSeries.setName("Burning");
+        deadSeries.setName("Dead");
+
+        ArrayList<int[]> history = this.simulation.getTurnHistory();
+        for (int t = 0; t < history.size(); t++) {
+            int[] snapshot = history.get(t);
+            aliveSeries.getData().add(new XYChart.Data<>(t + 1, snapshot[0]));
+            burningSeries.getData().add(new XYChart.Data<>(t + 1, snapshot[1]));
+            deadSeries.getData().add(new XYChart.Data<>(t + 1, snapshot[2]));
+        }
+
+        chart.getData().addAll(aliveSeries, burningSeries, deadSeries);
         return chart;
     }
 }
