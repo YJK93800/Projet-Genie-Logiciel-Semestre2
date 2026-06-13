@@ -51,15 +51,24 @@ public class NewForestPopUp {
         createBtn.getStyleClass().add("forest-button");
         createBtn.setMaxWidth(Double.MAX_VALUE);
 
+        Label errorLabel = new Label("Wrong type of inputs");
+        errorLabel.getStyleClass().add("error-label");
+        errorLabel.setVisible(false);
+
         createBtn.setOnAction(e -> {
+            try {
+                width = Integer.parseInt(widthField.getText());
+                height = Integer.parseInt(heightField.getText());
 
-            width = Integer.parseInt(widthField.getText());
-            height = Integer.parseInt(heightField.getText());
+                popup.close();
 
-            popup.close();
-
-            if (onFinish != null) {
-                onFinish.run();
+                if (onFinish != null) {
+                    onFinish.run();
+                }
+            } catch (NumberFormatException ex) {
+                widthField.setStyle("-fx-border-color: red;");
+                heightField.setStyle("-fx-border-color: red;");
+                errorLabel.setVisible(true);
             }
         });
 
@@ -68,6 +77,7 @@ public class NewForestPopUp {
                 widthField,
                 heightLabel,
                 heightField,
+                errorLabel,
                 createBtn
         );
 

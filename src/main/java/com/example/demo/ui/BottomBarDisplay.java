@@ -146,12 +146,13 @@ public class BottomBarDisplay {
         nextTurn.setOnAction(e -> {
             try {
                 int n = Integer.parseInt(turnField.getText());
+                turnField.setStyle("");
                 for (int i = 0; i < n; i++) {
                     this.simulation.spreadFireOneTurn();
                 }
                 this.refreshUI.run();
             } catch (NumberFormatException ex) {
-                System.out.println("Invalid number of turns");
+                turnField.setStyle("-fx-border-color: red;");
             }
         });
 
