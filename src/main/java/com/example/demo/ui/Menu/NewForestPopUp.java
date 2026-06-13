@@ -60,8 +60,8 @@ public class NewForestPopUp {
                 width = Integer.parseInt(widthField.getText());
                 height = Integer.parseInt(heightField.getText());
 
-                if (width > 100 || height > 100 || width <= 0 || height <= 0) {
-                    errorLabel.setText("Size must be between 1 and 100");
+                if ((width * height) > 10000 || width <= 0 || height <= 0) {
+                    errorLabel.setText("Total size must be less than 10 000 cells");
                     errorLabel.setVisible(true);
                     return;
                 }
