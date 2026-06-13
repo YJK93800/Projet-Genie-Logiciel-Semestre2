@@ -33,6 +33,7 @@ public class Simulation implements Serializable {
     private int turn = 0;
     private HashSet<Vegetation> burningPlants = new HashSet<>();
     private HashSet<Vegetation> alivePlants = new HashSet<>();
+    private ArrayList<int[]> turnHistory = new ArrayList<>();
 
     /**
      * Constructor method
@@ -89,6 +90,13 @@ public class Simulation implements Serializable {
      */
     public HashSet<Vegetation> getAlivePlants() { return this.alivePlants; }
 
+    /**
+     * Getter method of the turnHistory attribute
+     *
+     * @return list of int[] where each entry is {alive, burning, dead} for a given turn
+     */
+    public ArrayList<int[]> getTurnHistory() { return this.turnHistory; }
+
     // Methods
 
     /**
@@ -129,6 +137,27 @@ public class Simulation implements Serializable {
                 }
             }
         }
+    }
+
+    /**
+     * Records the current state counts (alive, burning, dead) into the turn history.
+     */
+    private void recordTurnSnapshot() {
+        int alive = alivePlants.size();
+        int burning = burningPlants.size();
+        int dead = 0;
+
+        ForestCell[][] grid = this.forest.getForestGrid();
+
+        for (ForestCell[] row : grid) {
+            for (ForestCell cell : row) {
+                if (cell instanceof Vegetation veg && veg.getState() == State.DEAD) {
+                    dead++;
+                }
+            }
+        }
+
+        turnHistory.add(new int[]{alive, burning, dead});
     }
 
     /**
@@ -223,7 +252,9 @@ public class Simulation implements Serializable {
             burningPlants.add(plant);
             alivePlants.remove(plant);
         }
+
         this.turn += 1;
+        recordTurnSnapshot();
     }
 
     /**
@@ -313,7 +344,4 @@ public class Simulation implements Serializable {
 
         return Math.max(0.0, Math.min(probability, 1.0));
     }
-
-
-
 }
