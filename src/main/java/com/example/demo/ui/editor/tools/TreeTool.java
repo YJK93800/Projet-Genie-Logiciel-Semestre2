@@ -5,12 +5,10 @@ import com.example.demo.model.cells.State;
 import com.example.demo.model.cells.Tree;
 import javafx.scene.paint.Color;
 
-
 /**
  * Represents the tool used to paint Tree cells in the forest grid
  * Creates tree instances and paints their color
  */
-
 
 public class TreeTool implements FillCell {
 

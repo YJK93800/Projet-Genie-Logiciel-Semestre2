@@ -13,7 +13,7 @@ public enum TreeSpecies {
     private double flammability;
 
     /**
-     * "Constructor" to set the specic attributes to a specie
+     * "Constructor" to set the specific attributes to a specie
      * @param flammability double, the flammability of the specie
      */
     TreeSpecies(double flammability){

@@ -4,8 +4,8 @@ import com.example.demo.model.cells.ForestCell;
 import javafx.scene.paint.Color;
 
 /**
- * Represents a painting tool used in the forest editor.
- * Each tool defines:
+ * Represents a painting tool used in the forest editor. <br/>
+ * Each tool defines: <br/>
  * - the visual color used for preview
  * - the type of ForestCell it creates when painting
  */
@@ -20,7 +20,7 @@ public interface FillCell {
     /**
      * Method to return an instance associated with the tool
      *
-     * @param row int value, position lenght-wise
+     * @param row int value, position length-wise
      * @param col int value, position width-wise
      * @return an instance of the tool
      */

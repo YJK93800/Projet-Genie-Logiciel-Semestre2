@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 /**
  * Represents a marquee/rectangle selection tool for the forest grid.
  */
+
 public class RectangleSelectionTool implements FillCell {
     @Override
     public Color getColor() {

@@ -145,13 +145,19 @@ public class BottomBarDisplay {
         return bottomBar;
     }
 
-    // Creates a vertical separator line between button groups
+    /**
+     * Creates a vertical separator line between button groups
+     *
+     * @return a vertical separator line
+     */
     private Separator verticalSeparator() {
         Separator sep = new Separator(Orientation.VERTICAL);
         return sep;
     }
 
-    // Starts the auto play timeline at the current speed
+    /**
+     * Starts the autoplay timeline at the current speed
+     */
     private void startAutoPlay() {
         if (timeline != null) {
             timeline.stop();
@@ -173,7 +179,9 @@ public class BottomBarDisplay {
         playPause.setText("Pause");
     }
 
-    // Stops the auto play
+    /**
+     * Stops the autoplay
+     */
     private void stopAutoPlay() {
         if (timeline != null) {
             timeline.stop();
@@ -181,7 +189,11 @@ public class BottomBarDisplay {
         playPause.setText("Play");
     }
 
-    // Changes the speed and restarts the timeline if it was running
+    /**
+     * Changes the speed and restarts the timeline if it was running
+     *
+     * @param newSpeed the new speed
+     */
     private void setSpeed(double newSpeed) {
         this.speed = newSpeed;
         System.out.println("Speed set to x" + (int) newSpeed);
@@ -198,7 +210,6 @@ public class BottomBarDisplay {
      *
      * @param simulation the new ongoing simulation
      */
-
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
     }

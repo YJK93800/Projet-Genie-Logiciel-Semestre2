@@ -61,6 +61,10 @@ public class SidebarDisplay {
         newForest.getStyleClass().add("nav-button");
         newForest.setOnAction(e -> controller.newForestAction());
 
+        Button newFromPicture = new Button("+ Import Picture");
+        newFromPicture.getStyleClass().add("nav-button");
+        newFromPicture.setOnAction(e -> controller.newForestPictureAction());
+
         Button btnSettings = new Button("⚙  Settings");
         btnSettings.getStyleClass().add("nav-button");
         btnSettings.setOnAction(e -> System.out.println("Open Settings"));
@@ -102,6 +106,7 @@ public class SidebarDisplay {
                 title,
                 separator(),
                 newForest,
+                newFromPicture,
                 btnSettings,
                 separator(),
                 weatherComponent.createMenu(),
@@ -113,7 +118,11 @@ public class SidebarDisplay {
         );
     }
 
-    // Creates a thin separator line between button groups
+    /**
+     * Creates a thin separator line between button groups
+     *
+     * @return the thin separator line
+     */
     private Pane separator() {
         Pane line = new Pane();
         line.getStyleClass().add("sidebar-separator");

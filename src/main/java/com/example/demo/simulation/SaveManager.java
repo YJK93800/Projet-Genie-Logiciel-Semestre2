@@ -14,7 +14,12 @@ public class SaveManager {
 
     private static final String SAVE_FOLDER = "saves";
 
-    // Saves the simulation instance in the saves folder under the given name
+    /**
+     * Saves the simulation instance in the saves folder under the given name
+     *
+     * @param simulation the simulation instance
+     * @param name the given name
+     */
     public static void save(Simulation simulation, String name) {
         File folder = new File(SAVE_FOLDER);
         if (!folder.exists()) {
@@ -35,7 +40,12 @@ public class SaveManager {
         }
     }
 
-    // Loads a simulation from the saves folder using the given name
+    /**
+     * Loads a simulation from the saves folder using the given name
+     *
+     * @param name the given name
+     * @return the simulation from the saves folder
+     */
     public static Simulation load(String name) {
         Simulation simulation = null;
         String path = SAVE_FOLDER + "/" + name + ".ser";
@@ -53,7 +63,11 @@ public class SaveManager {
         return simulation;
     }
 
-    // Returns the list of existing save names (without the .ser extension)
+    /**
+     * Returns the list of existing save names (without the .ser extension)
+     *
+     * @return the list of existing save names
+     */
     public static ArrayList<String> getSaveNames() {
         ArrayList<String> names = new ArrayList<>();
         File folder = new File(SAVE_FOLDER);
@@ -72,7 +86,11 @@ public class SaveManager {
         return names;
     }
 
-    // Deletes the save with the given name
+    /**
+     * Deletes the save with the given name
+     *
+     * @param name the given name
+     */
     public static void delete(String name) {
         File file = new File(SAVE_FOLDER + "/" + name + ".ser");
         if (file.exists()) {
@@ -81,7 +99,12 @@ public class SaveManager {
         }
     }
 
-    // Makes a deep copy of a simulation in memory (used for the checkpoint)
+    /**
+     * Makes a deep copy of a simulation in memory (used for the checkpoint)
+     *
+     * @param simulation the given simulation
+     * @return a copy of the given simulation
+     */
     public static Simulation deepCopy(Simulation simulation) {
         Simulation copy = null;
         try {

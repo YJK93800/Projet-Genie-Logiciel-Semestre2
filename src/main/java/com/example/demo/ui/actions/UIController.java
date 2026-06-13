@@ -38,6 +38,11 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.awt.image.BufferedImage;
+import com.example.demo.ui.Menu.NewForestPicturePopUp;
+
+
+
 
 public class UIController {
 
@@ -112,6 +117,63 @@ public class UIController {
 
 //                    tile.setOnMouseDragEntered(e -> handleTool(newSimulation, forestGrid, rect, row, col));
 //                    tile.setOnMouseClicked(e -> handleTool(newSimulation, forestGrid, rect, row, col));
+
+                    tile.setOnMousePressed(e -> handleCellPressed(e, newSimulation, forestGrid, rect, row, col));
+                    tile.setOnMouseDragEntered(e -> handleCellDragged(e, newSimulation, forestGrid, rect, row, col));
+                }
+            }
+        });
+
+        dialog.open();
+    }
+
+    /**
+     * Method to create a new forest grid from a picture
+     */
+    public void newForestPictureAction() {
+
+        NewForestPicturePopUp dialog = new NewForestPicturePopUp(() -> {
+
+            Weather weather = new Weather(
+                    WeatherType.SUNNY,
+                    new Wind(CardinalDirections.SOUTH, 100),
+                    30.5,
+                    50.9,
+                    86.25
+            );
+
+            Forest forest = new Forest(weather);
+
+            BufferedImage image = NewForestPicturePopUp.selectedImage;
+
+            int[][][] colorGrid = Forest.gridColors(image);
+            ForestCell[][] forestGrid = Forest.convertColorGrid(colorGrid);
+
+            int h = forestGrid.length;
+            int w = forestGrid[0].length;
+
+            forest.setForestGrid(forestGrid);
+
+            Simulation newSimulation = new Simulation(forest);
+
+            onSimulationCreated.accept(newSimulation);
+            forestDisplay.setForest(forest);
+
+            StackPane centerStack = (StackPane) root.getCenter();
+            centerStack.getChildren().set(0, forestDisplay.createContent());
+
+            Rectangle[][] rects = forestDisplay.getRects();
+
+            for (int i = 0; i < h; i++) {
+                for (int j = 0; j < w; j++) {
+
+                    int row = i;
+                    int col = j;
+
+                    Rectangle rect = rects[i][j];
+                    StackPane tile = (StackPane) rect.getParent();
+
+                    tile.setOnDragDetected(e -> tile.startFullDrag());
 
                     tile.setOnMousePressed(e -> handleCellPressed(e, newSimulation, forestGrid, rect, row, col));
                     tile.setOnMouseDragEntered(e -> handleCellDragged(e, newSimulation, forestGrid, rect, row, col));

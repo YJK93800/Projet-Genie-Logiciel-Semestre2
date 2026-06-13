@@ -73,15 +73,20 @@ public class Simulation implements Serializable {
      *
      * @return self-explanatory
      */
-
     public int getTurn(){return this.turn;}
 
     /**
      * Getter method of the burningPlants attribute
+     *
      * @return self-explanatory
      */
     public HashSet<Vegetation> getBurningPlants(){return this.burningPlants;}
 
+    /**
+     * Getter method of the alivePlants attribute
+     *
+     * @return self-explanatory
+     */
     public HashSet<Vegetation> getAlivePlants() { return this.alivePlants; }
 
     // Methods
@@ -129,7 +134,6 @@ public class Simulation implements Serializable {
      * @param i int value, the width position
      * @param j int value, the length position
      */
-
     public void ignitePlant(int i, int j){
         ForestCell[][] grid = this.forest.getForestGrid();
 
@@ -187,7 +191,6 @@ public class Simulation implements Serializable {
      * Spreads fire by one turn without wind
      * Burning plants try to ignite their four direct neighbors
      */
-
     public void spreadFireOneTurn() {
 
         ArrayList<Vegetation> plantsToIgnite = new ArrayList<>();
@@ -223,12 +226,11 @@ public class Simulation implements Serializable {
     /**
      * Auxiliary method for fire spreading methods
      *
-     * @param source the origin of the fire targetting the plant
+     * @param source the origin of the fire targeting the plant
      * @param plantsToIgnite array List, contains the cells to be set on fire
      * @param i int value, the width position
      * @param j int value, the length position
      */
-
     private void tryIgniteNeighbor(Vegetation source, ArrayList<Vegetation> plantsToIgnite, int i, int j) {
 
         ForestCell[][] grid = this.forest.getForestGrid();
