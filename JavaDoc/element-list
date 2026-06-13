@@ -1,0 +1,12 @@
+module:com.example.demo
+com.example.demo
+com.example.demo.exceptions
+com.example.demo.model
+com.example.demo.model.cells
+com.example.demo.model.Weather
+com.example.demo.simulation
+com.example.demo.ui
+com.example.demo.ui.actions
+com.example.demo.ui.editor
+com.example.demo.ui.editor.tools
+com.example.demo.ui.Menu
