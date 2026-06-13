@@ -709,6 +709,20 @@ public class UIController {
         root.setRight(scrollPanel);
     }
 
+    /**
+     * Zooms in the simulation
+     */
+    public void zoomIn() {
+        forestDisplay.zoomIn();
+    }
+
+
+    /**
+     * Zooms out in the simulation
+     */
+    public void zoomOut() {
+        forestDisplay.zoomOut();
+    }
 
 
 
