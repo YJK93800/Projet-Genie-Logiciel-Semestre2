@@ -733,7 +733,7 @@ public class UIController {
 
         CompletableFuture.runAsync(() -> {
             try {
-                URL videoUrl = getClass().getResource("/videos/video.mp4");
+                URL videoUrl = getClass().getResource("/videos/tutorial.mp4");
 
                 if (videoUrl == null) {
                     System.out.println("Tutorial video not found.");
