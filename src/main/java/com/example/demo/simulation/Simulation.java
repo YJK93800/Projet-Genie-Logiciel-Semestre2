@@ -4,6 +4,7 @@ import com.example.demo.exceptions.SimulationException;
 import com.example.demo.model.Forest;
 import com.example.demo.model.Weather.CardinalDirections;
 import com.example.demo.model.Weather.Weather;
+import com.example.demo.model.Weather.WeatherType;
 import com.example.demo.model.Weather.Wind;
 import com.example.demo.model.cells.ForestCell;
 import com.example.demo.model.cells.State;
@@ -15,7 +16,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.io.Serializable;
 
-import static com.example.demo.model.Weather.CardinalDirections.NEUTRAL;
+import static com.example.demo.model.Weather.CardinalDirections.*;
 import static com.example.demo.model.cells.State.BURNING;
 
 /**
@@ -241,6 +242,16 @@ public class Simulation implements Serializable {
             plant.setState(State.BURNING);
             burningPlants.add(plant);
             alivePlants.remove(plant);
+        }
+
+        //Changin wind direction
+
+        if (this.turn % 2 == 0 && Math.random() < 0.90) {
+            Wind wind = this.forest.getWeather().getWind();
+            CardinalDirections direction = wind.getWindDirection();
+
+            direction = CardinalDirections.setRandomDirection();
+
         }
 
         this.turn += 1;
