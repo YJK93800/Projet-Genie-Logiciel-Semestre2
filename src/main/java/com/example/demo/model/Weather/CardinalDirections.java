@@ -1,5 +1,4 @@
 package com.example.demo.model.Weather;
-
 /**
  * Enum representing the cardinal directions
  * <p>
@@ -35,6 +34,18 @@ public enum CardinalDirections {
                 return direction;
             }
         }
+        return NEUTRAL;
+    }
+
+    public static CardinalDirections setRandomDirection(){
+
+        for (CardinalDirections direction : CardinalDirections.values()) {
+
+            if (Math.random() < 0.5){
+                return direction;
+            }
+        }
+
         return NEUTRAL;
     }
 
